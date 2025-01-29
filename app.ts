@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import connectDB from './config/database';
 import userRoutes from './routes/userRoutes';
 import projectRoutes from './routes/projectRoutes';
-
+import setupSwagger from './swagger';
 const app: Application = express();
 
 // Middleware
@@ -17,6 +17,8 @@ app.use(express.json());
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/projects', projectRoutes);
+// Swagger
+setupSwagger(app as any);
 
 // Database connection
 connectDB();
