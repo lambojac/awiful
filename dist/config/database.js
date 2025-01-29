@@ -8,7 +8,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const connectDB = async () => {
     try {
-        const conn = await mongoose_1.default.connect(process.env.MONGODB_URI || 'mongodb+srv://kennie:869480Ak@cluster0.zkjbfkp.mongodb.net/awiful?retryWrites=true&w=majority');
+        const conn = await mongoose_1.default.connect(process.env.MONGODB_URI);
         console.log(`MongoDB Connected: ${conn.connection.host}`);
     }
     catch (error) {
