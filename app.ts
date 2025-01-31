@@ -16,7 +16,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/users', userRoutes);
-app.use('/api/projects', projectRoutes);
+app.use('/api/project', projectRoutes);
 // Swagger
 setupSwagger(app as any);
 

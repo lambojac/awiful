@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import User from '../models/user'; // Importing the model
+import User from '../models/user'; 
 import bcrypt from 'bcrypt';
 import asynchandler from "express-async-handler";
 import genToken from "../utils/genToken";

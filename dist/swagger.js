@@ -9,9 +9,9 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'User API',
+            title: 'awiful API',
             version: '1.0.0',
-            description: 'API documentation for User Authentication',
+            description: 'API documentation for awiful app',
         },
         servers: [
             {
