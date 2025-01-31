@@ -44,7 +44,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /project/create-project:
+ * /project/createProject:
  *   post:
  *     summary: Create a new project management entry
  *     tags: [ProjectManagement]
