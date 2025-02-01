@@ -24,7 +24,18 @@ const router = express.Router();
  *     responses:
  *       201:
  *         description: Created
+ *         content:
+ *           application/json:
+ *             examples:
+ *               application/json:
+ *                 value:
+ *                   title: "Sample Stat Card"
+ *                   count: 100
+ *                   backgroundColor: "#FF5733"
+ *                   actionBg: "#333FFF"
+ *                   textColor: true
  */
+
 router.post('/create-stat-cards',createStatCard)
 /**
  * @swagger
