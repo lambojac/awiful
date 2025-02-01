@@ -6,6 +6,7 @@ import connectDB from './config/database';
 import userRoutes from './routes/userRoutes';
 import projectRoutes from './routes/projectRoutes';
 import setupSwagger from './swagger';
+import statCard from "./routes/statCard"
 const app: Application = express();
 
 // Middleware
@@ -17,6 +18,7 @@ app.use(express.json());
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/project', projectRoutes);
+app.use('/api/stat-card',statCard)
 // Swagger
 setupSwagger(app as any);
 
