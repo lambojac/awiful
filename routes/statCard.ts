@@ -11,7 +11,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /create-stat-cards:
+ * /stat-card/create-stat-cards:
  *   post:
  *     summary: Create a new stat card
  *     tags: [StatCards]
@@ -28,7 +28,7 @@ const router = express.Router();
 router.post('/create-stat-cards',createStatCard)
 /**
  * @swagger
- * /get-stat-cards:
+ * /stat-card/get-stat-cards:
  *   get:
  *     summary: Get all stat cards
  *     tags: [StatCards]
@@ -40,7 +40,7 @@ router.get('/get-stat-cards', getStatCard)
 
 /**
  * @swagger
- * /get-stat-cards/{id}:
+ * /stat-card/get-stat-cards/{id}:
  *   get:
  *     summary: Get a single stat card by ID
  *     tags: [StatCards]
@@ -60,7 +60,7 @@ router.get('/get-stat-cards/:id',getStatById)
 
 /**
  * @swagger
- * /stat-cards/{id}:
+ * /stat-card/stat-cards/{id}:
  *   put:
  *     summary: Update a stat card
  *     tags: [StatCards]
@@ -88,7 +88,7 @@ router.put('/update-stat-cards/:id',updateStatById)
 
 /**
  * @swagger
- * /delete-stat-cards/{id}:
+ * /stat-card/delete-stat-cards/{id}:
  *   delete:
  *     summary: Delete a stat card
  *     tags: [StatCards]

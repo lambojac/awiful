@@ -42,4 +42,4 @@ const StatCardSchema = new mongoose_1.Schema({
     textColor: { type: Boolean, default: false },
 });
 exports.default = mongoose_1.default.model('StatCard', StatCardSchema);
-//# sourceMappingURL=statCard.js.map
+//# sourceMappingURL=statcard.js.map

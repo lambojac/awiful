@@ -4,10 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteStatById = exports.updateStatById = exports.getStatById = exports.getStatCard = exports.createStatCard = void 0;
-const statCard_1 = __importDefault(require("../models/statCard"));
+const statcard_1 = __importDefault(require("../models/statcard"));
 const createStatCard = async (req, res) => {
     try {
-        const statCard = new statCard_1.default(req.body);
+        const statCard = new statcard_1.default(req.body);
         await statCard.save();
         res.status(201).json(statCard);
     }
@@ -18,7 +18,7 @@ const createStatCard = async (req, res) => {
 exports.createStatCard = createStatCard;
 const getStatCard = async (_req, res) => {
     try {
-        const statCards = await statCard_1.default.find();
+        const statCards = await statcard_1.default.find();
         res.json(statCards);
     }
     catch (error) {
@@ -28,7 +28,7 @@ const getStatCard = async (_req, res) => {
 exports.getStatCard = getStatCard;
 const getStatById = async (req, res) => {
     try {
-        const statCard = await statCard_1.default.findById(req.params.id);
+        const statCard = await statcard_1.default.findById(req.params.id);
         if (!statCard)
             return res.status(404).json({ message: 'Stat card not found' });
         return res.json(statCard);
@@ -40,7 +40,7 @@ const getStatById = async (req, res) => {
 exports.getStatById = getStatById;
 const updateStatById = async (req, res) => {
     try {
-        const updatedStatCard = await statCard_1.default.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const updatedStatCard = await statcard_1.default.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!updatedStatCard)
             return res.status(404).json({ message: 'Stat card not found' });
         return res.json(updatedStatCard);
@@ -52,7 +52,7 @@ const updateStatById = async (req, res) => {
 exports.updateStatById = updateStatById;
 const deleteStatById = async (req, res) => {
     try {
-        const deletedStatCard = await statCard_1.default.findByIdAndDelete(req.params.id);
+        const deletedStatCard = await statcard_1.default.findByIdAndDelete(req.params.id);
         if (!deletedStatCard)
             return res.status(404).json({ message: 'Stat card not found' });
         return res.status(204).json("stat card deleted succesfully");

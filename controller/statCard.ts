@@ -1,6 +1,6 @@
 
 import {  Request, Response } from 'express';
-import StatCard from '../models/statCard';
+import StatCard from '../models/statcard';
 
 
 
