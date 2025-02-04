@@ -103,7 +103,7 @@ router.post("/", upload.single('image'), createArticle);
  *           schema:
  *             type: object
  *             properties:
- *               coverImg:
+ *               image:
  *                 type: string
  *               title:
  *                 type: string
