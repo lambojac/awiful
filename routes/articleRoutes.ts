@@ -62,7 +62,7 @@ router.get("/:id", getArticleById);
  *           schema:
  *             type: object
  *             properties:
- *               coverImg:
+ *               image:
  *                 type: string
  *                 example: "https://example.com/image.jpg"
  *               title:
