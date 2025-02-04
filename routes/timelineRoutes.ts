@@ -51,7 +51,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/timelines:
+ * /timelines:
  *   get:
  *     summary: Get all timeline entries
  *     tags: [Timelines]
@@ -63,7 +63,7 @@ router.get("/", getTimelines);
 
 /**
  * @swagger
- * /api/timelines/{id}:
+ * /timelines/{id}:
  *   get:
  *     summary: Get a timeline entry by ID
  *     tags: [Timelines]
@@ -84,7 +84,7 @@ router.get("/:id", getTimelineById);
 
 /**
  * @swagger
- * /api/timelines:
+ * /timelines:
  *   post:
  *     summary: Create a new timeline entry
  *     tags: [Timelines]
@@ -102,7 +102,7 @@ router.post("/", createTimeline);
 
 /**
  * @swagger
- * /api/timelines/{id}:
+ * /timelines/{id}:
  *   put:
  *     summary: Update a timeline entry
  *     tags: [Timelines]
@@ -129,7 +129,7 @@ router.put("/:id", updateTimeline);
 
 /**
  * @swagger
- * /api/timelines/{id}:
+ * /timelines/{id}:
  *   delete:
  *     summary: Delete a timeline entry
  *     tags: [Timelines]
