@@ -1,3 +1,5 @@
+import { Request } from "express";
+
 export interface StatCardData {
     id: string;
     title: string;
@@ -49,3 +51,8 @@ export interface StatCardData {
     desc: string;
     topArticle?: boolean;
   }
+
+  export interface MulterRequest extends Request {
+    files?: { [fieldname: string]: Express.Multer.File[]  }; 
+  }
+  

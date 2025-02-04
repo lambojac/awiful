@@ -8,6 +8,7 @@ import projectRoutes from './routes/projectRoutes';
 import setupSwagger from './swagger';
 import statCard from "./routes/statCard"
 import timelineRoutes from "./routes/timelineRoutes"
+import articleRoutes from "./routes/articleRoutes"
 const app: Application = express();
 
 // Middleware
@@ -21,6 +22,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/project', projectRoutes);
 app.use('/api/stat-card',statCard)
 app.use("/api/timelines", timelineRoutes);
+app.use("/api/articles", articleRoutes);
 // Swagger
 setupSwagger(app as any);
 

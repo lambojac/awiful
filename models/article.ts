@@ -4,7 +4,7 @@ import { ArticleProps } from '../types/index';
 export interface ArticleDocument extends ArticleProps{}
 
 const ArticleSchema = new Schema({
-  coverImg: { type: String, required: true },
+ image:String,
   title: { type: String, required: true },
   descHeading: { type: String, required: true },
   desc: { type: String, required: true },
