@@ -1,6 +1,6 @@
 import express from 'express';
 import { createProject, getProjects,getProjectById,updateProjectById,deleteProjectById} from '../controller/projectController';
-
+import Secure from '../middleware/authMiddleware';
 const router = express.Router();
 
 /**
@@ -58,7 +58,7 @@ const router = express.Router();
  *       201:
  *         description: Created
  */
-router.post('/createProject', createProject);
+router.post('/createProject', Secure,createProject);
 /**
  * @swagger
  * /project/getAllProject:
@@ -69,7 +69,7 @@ router.post('/createProject', createProject);
  *       200:
  *         description: A list of project management entries
  */
-router.get('/getAllProject', getProjects);
+router.get('/getAllProject',Secure, getProjects);
 /**
  * @swagger
  * /project/{id}:
@@ -88,7 +88,7 @@ router.get('/getAllProject', getProjects);
  *       404:
  *         description: Entry not found
  */
-router.get('/:id',getProjectById)
+router.get('/:id',Secure,getProjectById)
 /**
  * @swagger
  * /project/{id}:
@@ -111,7 +111,7 @@ router.get('/:id',getProjectById)
  *       200:
  *         description: Updated successfully
  */
-router.put("/:id",updateProjectById)
+router.put("/:id",Secure,updateProjectById)
 /**
  * @swagger
  * /project/{id}:
@@ -129,6 +129,6 @@ router.put("/:id",updateProjectById)
  *         description: Deleted successfully
  */
 
-router.delete("/:id",deleteProjectById)
+router.delete("/:id",Secure,deleteProjectById)
 
 export default router;

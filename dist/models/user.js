@@ -45,7 +45,12 @@ const UserSchema = new mongoose_1.Schema({
     date_created: { type: String, default: new Date().toISOString() },
     email: { type: String, required: true, unique: true },
     phone_number: { type: String, required: true },
-    role: { type: String, required: true, default: "user" },
+    role: {
+        type: String,
+        required: true,
+        enum: ["admin", "software_developer", "content_creator", "digital_marketer", "customer"],
+        default: "customer"
+    },
     zoom_username: { type: String },
     skype_username: { type: String }
 }, {

@@ -55,11 +55,12 @@ exports.loginUser = (0, express_async_handler_1.default)(async (req, res) => {
             sameSite: "none",
             secure: true,
         });
-        const { id, email, } = user;
+        const { id, email, role } = user;
         res.status(200).json({
             id: id.toString(),
             email,
-            token
+            token,
+            role
         });
     }
     else {

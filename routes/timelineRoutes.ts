@@ -6,7 +6,7 @@ import {
   updateTimeline,
   deleteTimeline,
 } from "../controller/timeline";
-
+import Secure from '../middleware/authMiddleware'
 const router = express.Router();
 
 /**
@@ -59,7 +59,7 @@ const router = express.Router();
  *       200:
  *         description: A list of timeline entries
  */
-router.get("/", getTimelines);
+router.get("/", Secure,getTimelines);
 
 /**
  * @swagger
@@ -80,7 +80,7 @@ router.get("/", getTimelines);
  *       404:
  *         description: Timeline entry not found
  */
-router.get("/:id", getTimelineById);
+router.get("/:id",Secure, getTimelineById);
 
 /**
  * @swagger
@@ -98,7 +98,7 @@ router.get("/:id", getTimelineById);
  *       201:
  *         description: Timeline entry created successfully
  */
-router.post("/", createTimeline);
+router.post("/",Secure,createTimeline);
 
 /**
  * @swagger
@@ -125,7 +125,7 @@ router.post("/", createTimeline);
  *       404:
  *         description: Timeline entry not found
  */
-router.put("/:id", updateTimeline);
+router.put("/:id",Secure,updateTimeline);
 
 /**
  * @swagger
@@ -146,6 +146,6 @@ router.put("/:id", updateTimeline);
  *       404:
  *         description: Timeline entry not found
  */
-router.delete("/:id", deleteTimeline);
+router.delete("/:id",Secure, deleteTimeline);
 
 export default router;

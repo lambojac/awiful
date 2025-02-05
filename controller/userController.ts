@@ -70,13 +70,14 @@ export const loginUser = asynchandler(async (req: Request, res: Response): Promi
         secure: true, // Use secure cookies in production
       });
   
-      const { id,  email, } = user;
+      const { id,  email, role } = user;
   
       // Include the user ID in the response
       res.status(200).json({
         id: id.toString(), 
         email,
-        token
+        token,
+        role
       });
     } else {
       res.status(400);

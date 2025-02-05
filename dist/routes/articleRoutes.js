@@ -6,11 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const article_1 = require("../controller/article");
 const multer_1 = __importDefault(require("../middleware/multer"));
+const authMiddleware_1 = __importDefault(require("../middleware/authMiddleware"));
 const router = express_1.default.Router();
-router.get("/", article_1.getArticles);
-router.get("/:id", article_1.getArticleById);
-router.post("/", multer_1.default.single('image'), article_1.createArticle);
-router.put("/:id", article_1.updateArticle);
-router.delete("/:id", article_1.deleteArticle);
+router.get("/", authMiddleware_1.default, article_1.getArticles);
+router.get("/:id", authMiddleware_1.default, article_1.getArticleById);
+router.post("/", authMiddleware_1.default, multer_1.default.single('image'), article_1.createArticle);
+router.put("/:id", authMiddleware_1.default, article_1.updateArticle);
+router.delete("/:id", authMiddleware_1.default, article_1.deleteArticle);
 exports.default = router;
 //# sourceMappingURL=articleRoutes.js.map

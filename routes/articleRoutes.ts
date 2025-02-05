@@ -7,6 +7,7 @@ import {
   deleteArticle,
 } from "../controller/article";
 import upload from "../middleware/multer"
+import Secure from '../middleware/authMiddleware'
 const router = express.Router();
 
 /**
@@ -26,7 +27,7 @@ const router = express.Router();
  *       200:
  *         description: List of all articles
  */
-router.get("/", getArticles);
+router.get("/",Secure, getArticles);
 
 /**
  * @swagger
@@ -47,7 +48,7 @@ router.get("/", getArticles);
  *       404:
  *         description: Article not found
  */
-router.get("/:id", getArticleById);
+router.get("/:id", Secure,getArticleById);
 
 /**
  * @swagger
@@ -81,7 +82,7 @@ router.get("/:id", getArticleById);
  *       201:
  *         description: Article created
  */
-router.post("/", upload.single('image'), createArticle);
+router.post("/",Secure, upload.single('image'), createArticle);
 
 /**
  * @swagger
@@ -119,7 +120,7 @@ router.post("/", upload.single('image'), createArticle);
  *       404:
  *         description: Article not found
  */
-router.put("/:id", updateArticle);
+router.put("/:id", Secure,updateArticle);
 
 /**
  * @swagger
@@ -140,6 +141,6 @@ router.put("/:id", updateArticle);
  *       404:
  *         description: Article not found
  */
-router.delete("/:id", deleteArticle);
+router.delete("/:id",Secure, deleteArticle);
 
 export default router;
