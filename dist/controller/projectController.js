@@ -7,9 +7,13 @@ exports.deleteProjectById = exports.updateProjectById = exports.getProjectById =
 const projectManagement_1 = __importDefault(require("../models/projectManagement"));
 const createProject = async (req, res) => {
     try {
-        const projectManagement = new projectManagement_1.default(req.body);
+        const { userId, ...projectData } = req.body;
+        const projectManagement = new projectManagement_1.default({
+            ...projectData,
+            user: userId,
+        });
         await projectManagement.save();
-        return res.status(201).json(projectManagement);
+        return res.status(201).json({ success: true, data: projectManagement });
     }
     catch (error) {
         return res.status(400).json({ error: error.message });
@@ -18,8 +22,8 @@ const createProject = async (req, res) => {
 exports.createProject = createProject;
 const getProjects = async (_req, res) => {
     try {
-        const projects = await projectManagement_1.default.find();
-        return res.status(200).json(projects);
+        const projects = await projectManagement_1.default.find().populate("user", "firstName lastName email phone_number role").lean();
+        return res.status(200).json({ success: true, data: projects });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
@@ -28,10 +32,12 @@ const getProjects = async (_req, res) => {
 exports.getProjects = getProjects;
 const getProjectById = async (req, res) => {
     try {
-        const project = await projectManagement_1.default.findById(req.params.id);
+        const project = await projectManagement_1.default.findById(req.params.id)
+            .populate("user", "firstName lastName email phone_number role")
+            .lean();
         if (!project)
-            return res.status(404).json({ error: 'Entry not found' });
-        return res.status(200).json(project);
+            return res.status(404).json({ error: "Entry not found" });
+        return res.status(200).json({ success: true, data: project });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
@@ -40,10 +46,11 @@ const getProjectById = async (req, res) => {
 exports.getProjectById = getProjectById;
 const updateProjectById = async (req, res) => {
     try {
-        const updatedProject = await projectManagement_1.default.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const { userId, ...updateData } = req.body;
+        const updatedProject = await projectManagement_1.default.findByIdAndUpdate(req.params.id, { ...updateData, user: userId }, { new: true }).populate("user", "firstName lastName email phone_number role").lean();
         if (!updatedProject)
-            return res.status(404).json({ error: 'Entry not found' });
-        return res.status(200).json(updatedProject);
+            return res.status(404).json({ error: "Entry not found" });
+        return res.status(200).json({ success: true, data: updatedProject });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
@@ -54,8 +61,8 @@ const deleteProjectById = async (req, res) => {
     try {
         const deletedProject = await projectManagement_1.default.findByIdAndDelete(req.params.id);
         if (!deletedProject)
-            return res.status(404).json({ error: 'Entry not found' });
-        return res.status(200).json({ message: 'Entry deleted successfully' });
+            return res.status(404).json({ error: "Entry not found" });
+        return res.status(200).json({ success: true, message: "Entry deleted successfully" });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });

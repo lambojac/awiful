@@ -4,13 +4,23 @@ import { ProjectManagementDataProps } from '../types/index';
 export interface ProjectManagementDocument extends ProjectManagementDataProps {}
 
 const ProjectManagementSchema = new Schema({
-  username: { type: String, required: true },
-  date_created: { type: String, default: new Date().toISOString() },
-  email: { type: String, required: true },
-  phone_number: { type: String, required: true },
-  role: { type: String, required: true }
-}, {
-  timestamps: true
-});
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // Reference to User model
+    project_title: { type: String, required: true },
+    service: { type: String, required: true },
+    country: { type: String, required: true },
+    start_date: { type: String, required: true },
+    end_date: { type: String, required: true },
+    price: { type: String, required: true },
+    business_size: { type: String, required: true },
+    description: { type: String, required: true },
+    status: {
+      type: String,
+      enum: ["pending payment", "in progress", "completed"],
+      default: "pending payment"
+    }
+  }, {
+    timestamps: true
+  });
+  
 
 export default mongoose.model<ProjectManagementDocument>('ProjectManagement', ProjectManagementSchema);

@@ -1,134 +1,203 @@
 import express from 'express';
-import { createProject, getProjects,getProjectById,updateProjectById,deleteProjectById} from '../controller/projectController';
+import { 
+  createProject, 
+  getProjects, 
+  getProjectById, 
+  updateProjectById, 
+  deleteProjectById 
+} from '../controller/projectController';
 import Secure from '../middleware/authMiddleware';
+
 const router = express.Router();
 
 /**
  * @swagger
  * components:
  *   schemas:
- *     ProjectManagement:
+ *     Project:
  *       type: object
  *       required:
- *         - username
- *         - email
- *         - phone_number
- *         - role
+ *         - user
+ *         - project_title
+ *         - service
+ *         - country
+ *         - start_date
+ *         - end_date
+ *         - price
+ *         - business_size
+ *         - description
+ *         - status
  *       properties:
- *         id:
+ *         _id:
  *           type: string
- *           description: The auto-generated id of the project management entry
- *         username:
+ *           description: Auto-generated ID of the project
+ *         user:
  *           type: string
- *           description: The username of the project manager
- *         email:
+ *           description: User ID of the project owner
+ *         project_title:
  *           type: string
- *           description: Email of the project manager
- *         phone_number:
+ *           description: Title of the project
+ *         service:
  *           type: string
- *           description: Phone number of the project manager
- *         role:
+ *           description: The type of service provided in the project
+ *         country:
  *           type: string
- *           description: Role of the project manager
- *         date_created:
+ *           description: Country of the project
+ *         start_date:
  *           type: string
- *           description: The date the entry was created
+ *           format: date
+ *           description: Project start date
+ *         end_date:
+ *           type: string
+ *           format: date
+ *           description: Project end date
+ *         price:
+ *           type: string
+ *           description: Price for the project
+ *         business_size:
+ *           type: string
+ *           description: Size of the business (e.g., Small, Medium, Large)
+ *         description:
+ *           type: string
+ *           description: Detailed project description
+ *         status:
+ *           type: string
+ *           description: Current project status
  *       example:
- *         id: 60d0fe4f5311236168a109ca
- *         username: johndoe
- *         email: johndoe@example.com
- *         phone_number: "+1234567890"
- *         role: "Manager"
- *         date_created: "2024-01-31T12:00:00.000Z"
+ *         _id: "67a48acf140e270c6e63a831"
+ *         user: "6798fcd938efc0fde951e9e7"
+ *         project_title: "Website Development"
+ *         service: "Full-Stack Web Development"
+ *         country: "United States"
+ *         start_date: "2024-08-10"
+ *         end_date: "2024-09-15"
+ *         price: "5000"
+ *         business_size: "Medium"
+ *         description: "Developing a full-stack website with authentication, database integration, and payment gateway."
+ *         status: "pending payment"
  */
 
 /**
  * @swagger
- * /project/createProject:
+ * /project:
  *   post:
- *     summary: Create a new project management entry
- *     tags: [ProjectManagement]
+ *     summary: Create a new project
+ *     tags: [Project]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/ProjectManagement'
+ *             $ref: '#/components/schemas/Project'
  *     responses:
  *       201:
- *         description: Created
+ *         description: Project created successfully
+ *       400:
+ *         description: Bad request (missing or invalid fields)
+ *       500:
+ *         description: Internal server error
  */
-router.post('/createProject', Secure,createProject);
+router.post('/', Secure, createProject);
+
 /**
  * @swagger
- * /project/getAllProject:
+ * /projects:
  *   get:
- *     summary: Get all project management entries
- *     tags: [ProjectManagement]
+ *     summary: Get all projects
+ *     tags: [Project]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: A list of project management entries
+ *         description: A list of projects
+ *       500:
+ *         description: Internal server error
  */
-router.get('/getAllProject',Secure, getProjects);
+router.get('/projects', Secure, getProjects);
+
 /**
  * @swagger
  * /project/{id}:
  *   get:
- *     summary: Get a single project management entry by ID
- *     tags: [ProjectManagement]
+ *     summary: Get a project by ID
+ *     tags: [Project]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
+ *         description: Project ID
  *     responses:
  *       200:
- *         description: Project management entry found
+ *         description: Project retrieved successfully
  *       404:
- *         description: Entry not found
+ *         description: Project not found
+ *       500:
+ *         description: Internal server error
  */
-router.get('/:id',Secure,getProjectById)
+router.get('/:id', Secure, getProjectById);
+
 /**
  * @swagger
  * /project/{id}:
  *   put:
- *     summary: Update a project management entry by ID
- *     tags: [ProjectManagement]
+ *     summary: Update a project by ID
+ *     tags: [Project]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
+ *         description: Project ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/ProjectManagement'
+ *             $ref: '#/components/schemas/Project'
  *     responses:
  *       200:
- *         description: Updated successfully
+ *         description: Project updated successfully
+ *       400:
+ *         description: Invalid data
+ *       404:
+ *         description: Project not found
+ *       500:
+ *         description: Internal server error
  */
-router.put("/:id",Secure,updateProjectById)
+router.put('/:id', Secure, updateProjectById);
+
 /**
  * @swagger
  * /project/{id}:
  *   delete:
- *     summary: Delete a project management entry by ID
- *     tags: [ProjectManagement]
+ *     summary: Delete a project by ID
+ *     tags: [Project]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
+ *         description: Project ID
  *     responses:
  *       200:
- *         description: Deleted successfully
+ *         description: Project deleted successfully
+ *       404:
+ *         description: Project not found
+ *       500:
+ *         description: Internal server error
  */
-
-router.delete("/:id",Secure,deleteProjectById)
+router.delete('/:id', Secure, deleteProjectById);
 
 export default router;

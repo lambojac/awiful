@@ -17,7 +17,7 @@ const UserSchema = new Schema({
   role: {
     type: String,
     required: true,
-    enum: ["admin", "software_developer", "content_creator", "digital_marketer", "customer"],
+    enum: ["superadmin","admin", "software_developer", "content_creator", "digital_marketer", "customer"],
     default: "customer"
   },
   zoom_username: { type: String },

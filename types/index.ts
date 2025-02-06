@@ -28,12 +28,18 @@ export interface StatCardData {
   
   export interface ProjectManagementDataProps {
     id: string;
-    username: string;
-    date_created: string;
-    email: string;
-    phone_number: string;
-    role: string;
-  }
+    user: string; // Reference to the user ID from UserDataProps
+    project_title: string;
+    service: string;
+    country: string;
+    start_date: string;
+    end_date: string;
+    price: string;
+    business_size: string;
+    description: string;
+    status: "pending payment" | "in progress" | "completed";
+}
+
   
   export interface timelineDataProps {
     time: string;

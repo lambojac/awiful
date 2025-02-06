@@ -35,11 +35,20 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const ProjectManagementSchema = new mongoose_1.Schema({
-    username: { type: String, required: true },
-    date_created: { type: String, default: new Date().toISOString() },
-    email: { type: String, required: true },
-    phone_number: { type: String, required: true },
-    role: { type: String, required: true }
+    user: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User', required: true },
+    project_title: { type: String, required: true },
+    service: { type: String, required: true },
+    country: { type: String, required: true },
+    start_date: { type: String, required: true },
+    end_date: { type: String, required: true },
+    price: { type: String, required: true },
+    business_size: { type: String, required: true },
+    description: { type: String, required: true },
+    status: {
+        type: String,
+        enum: ["pending payment", "in progress", "completed"],
+        default: "pending payment"
+    }
 }, {
     timestamps: true
 });
