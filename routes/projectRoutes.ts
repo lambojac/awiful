@@ -103,7 +103,7 @@ router.post('/', Secure, createProject);
 
 /**
  * @swagger
- * /project:
+ * /project/projects:
  *   get:
  *     summary: Get all projects
  *     tags: [Project]
