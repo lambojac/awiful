@@ -63,6 +63,17 @@ export interface StatCardData {
     tags?: string;
 }
 
+export interface MarketingDataProps  {
+  user: UserDataProps;
+  project_title: string;
+  service: string;
+  start_date: string;
+  end_date: string;
+  budget: string;
+  business_size: string;
+  description: string;
+}
+
 
   export interface MulterRequest extends Request {
     files?: { [fieldname: string]: Express.Multer.File[]  }; 
