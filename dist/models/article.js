@@ -39,7 +39,12 @@ const ArticleSchema = new mongoose_1.Schema({
     title: { type: String, required: true },
     descHeading: { type: String, required: true },
     desc: { type: String, required: true },
-    topArticle: { type: Boolean, default: false }
+    topArticle: { type: Boolean, default: false },
+    content: { type: String },
+    category: { type: String },
+    status: { type: String },
+    keywords: { type: String },
+    tags: { type: String }
 }, {
     timestamps: true
 });

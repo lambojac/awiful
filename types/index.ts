@@ -51,12 +51,18 @@ export interface StatCardData {
   
   export interface ArticleProps {
     id?: string;
-    coverImg: any;
+    image: string;
     title: string;
     descHeading: string;
     desc: string;
     topArticle?: boolean;
-  }
+    content?: string;
+    category?: string;
+    status?: string;
+    keywords?: string;
+    tags?: string;
+}
+
 
   export interface MulterRequest extends Request {
     files?: { [fieldname: string]: Express.Multer.File[]  }; 

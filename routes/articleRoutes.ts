@@ -27,7 +27,7 @@ const router = express.Router();
  *       200:
  *         description: List of all articles
  */
-router.get("/",Secure, getArticles);
+router.get("/", Secure, getArticles);
 
 /**
  * @swagger
@@ -48,7 +48,7 @@ router.get("/",Secure, getArticles);
  *       404:
  *         description: Article not found
  */
-router.get("/:id", Secure,getArticleById);
+router.get("/:id", Secure, getArticleById);
 
 /**
  * @swagger
@@ -78,11 +78,26 @@ router.get("/:id", Secure,getArticleById);
  *               topArticle:
  *                 type: boolean
  *                 example: false
+ *               content:
+ *                 type: string
+ *                 example: "Detailed article content."
+ *               category:
+ *                 type: string
+ *                 example: "Technology"
+ *               status:
+ *                 type: string
+ *                 example: "Published"
+ *               keywords:
+ *                 type: string
+ *                 example: "Tech, Innovation, AI"
+ *               tags:
+ *                 type: string
+ *                 example: "#AI #Technology #Future"
  *     responses:
  *       201:
  *         description: Article created
  */
-router.post("/",Secure, upload.single('image'), createArticle);
+router.post("/", Secure, upload.single('image'), createArticle);
 
 /**
  * @swagger
@@ -114,13 +129,23 @@ router.post("/",Secure, upload.single('image'), createArticle);
  *                 type: string
  *               topArticle:
  *                 type: boolean
+ *               content:
+ *                 type: string
+ *               category:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *               keywords:
+ *                 type: string
+ *               tags:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Article updated
  *       404:
  *         description: Article not found
  */
-router.put("/:id", Secure,updateArticle);
+router.put("/:id", Secure, updateArticle);
 
 /**
  * @swagger
@@ -141,6 +166,6 @@ router.put("/:id", Secure,updateArticle);
  *       404:
  *         description: Article not found
  */
-router.delete("/:id",Secure, deleteArticle);
+router.delete("/:id", Secure, deleteArticle);
 
 export default router;

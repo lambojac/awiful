@@ -41,7 +41,7 @@ export const getArticleById = async (req: Request, res: Response) => {
  */
 export const createArticle = async (req: Request, res: Response) => {
     try {
-      const { title, descHeading, desc, topArticle } = req.body;
+      const { title, descHeading, desc, topArticle,content,category,status,keywords,tags } = req.body;
   
       // Extract file and convert to Base64
       const image =req.file ? req.file.buffer.toString('base64') : null;
@@ -53,6 +53,11 @@ export const createArticle = async (req: Request, res: Response) => {
         descHeading,
         desc,
         topArticle,
+        content,
+        category,
+        status,
+        keywords,
+        tags
       });
   
       const savedArticle = await newArticle.save();
@@ -68,22 +73,39 @@ export const createArticle = async (req: Request, res: Response) => {
  * @access  Public
  */
 export const updateArticle = async (req: Request, res: Response) => {
-  try {
-    const updatedArticle = await Article.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
-
-    if (!updatedArticle) {
-      return res.status(404).json({ message: "Article not found" });
+    try {
+      const { title, descHeading, desc, topArticle, content, category, status, keywords, tags } = req.body;
+  
+      // Extract file and convert to Base64 if a new file is uploaded
+      const image = req.file ? req.file.buffer.toString('base64') : undefined;
+  
+      // Find the existing article
+      const existingArticle = await Article.findById(req.params.id);
+      if (!existingArticle) {
+        return res.status(404).json({ message: "Article not found" });
+      }
+  
+      // Update fields only if they are provided in the request
+      if (image) existingArticle.image = image;
+      if (title) existingArticle.title = title;
+      if (descHeading) existingArticle.descHeading = descHeading;
+      if (desc) existingArticle.desc = desc;
+      if (topArticle !== undefined) existingArticle.topArticle = topArticle;
+      if (content) existingArticle.content = content;
+      if (category) existingArticle.category = category;
+      if (status) existingArticle.status = status;
+      if (keywords) existingArticle.keywords = keywords;
+      if (tags) existingArticle.tags = tags;
+  
+      // Save the updated article
+      const updatedArticle = await existingArticle.save();
+  
+      return res.status(200).json(updatedArticle);
+    } catch (error) {
+      return res.status(500).json({ message: "Server error", error });
     }
-
-    return res.status(200).json(updatedArticle);
-  } catch (error) {
-    return res.status(500).json({ message: "Server error", error });
-  }
-};
+  };
+  
 
 /**
  * @desc    Delete an article by ID
