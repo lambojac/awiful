@@ -11,6 +11,7 @@ import timelineRoutes from "./routes/timelineRoutes"
 import articleRoutes from "./routes/articleRoutes"
 import marketing from "./routes/marketingRoutes"
 import LatestActivity from './routes/LatestActivity';
+import dashboard from "./routes/dashboard"
 const app: Application = express();
 
 // Middleware
@@ -27,6 +28,7 @@ app.use("/api/timelines", timelineRoutes);
 app.use("/api/articles", articleRoutes);
 app.use("/api/marketing",marketing)
 app.use("/api/latest-activity",LatestActivity)
+app.use("/api/dashboard",dashboard)
 // Swagger
 setupSwagger(app as any);
 
