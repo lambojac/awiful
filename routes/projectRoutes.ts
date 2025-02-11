@@ -74,7 +74,7 @@ const router = express.Router();
  *         price: "5000"
  *         business_size: "Medium"
  *         description: "Developing a full-stack website with authentication, database integration, and payment gateway."
- *         status: "pending payment"
+ *         status: "pending"
  */
 
 /**

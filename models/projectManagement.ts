@@ -15,8 +15,8 @@ const ProjectManagementSchema = new Schema({
     description: { type: String, required: true },
     status: {
       type: String,
-      enum: ["pending payment", "in progress", "completed"],
-      default: "pending payment"
+      enum: ["pending", "in_progress", "completed","canceled"],
+      default: "pending"
     }
   }, {
     timestamps: true

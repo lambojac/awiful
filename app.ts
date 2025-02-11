@@ -12,6 +12,7 @@ import articleRoutes from "./routes/articleRoutes"
 import marketing from "./routes/marketingRoutes"
 import LatestActivity from './routes/LatestActivity';
 import dashboard from "./routes/dashboard"
+import getProjectAnalytics from './routes/projectAnalytics';
 const app: Application = express();
 
 // Middleware
@@ -29,6 +30,7 @@ app.use("/api/articles", articleRoutes);
 app.use("/api/marketing",marketing)
 app.use("/api/latest-activity",LatestActivity)
 app.use("/api/dashboard",dashboard)
+app.use("/api/analytics",getProjectAnalytics)
 // Swagger
 setupSwagger(app as any);
 
