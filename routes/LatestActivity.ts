@@ -1,5 +1,5 @@
 import express from "express";
-import { getLatestActivities, createActivity, updateActivity, deleteActivity } from "../controller/LatestActivityController";
+import { getLatestActivities, createActivity, updateActivity, deleteActivity } from "../controller/latest";
 
 const router = express.Router();
 
