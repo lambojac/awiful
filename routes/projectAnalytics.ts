@@ -1,5 +1,5 @@
 import express from "express";
-import { getProjectAnalytics } from "../controller/projectanalytics";
+import { getProjectAnalytics } from "../controller/project-analytics";
 const router = express.Router();
 /**
  * @swagger
