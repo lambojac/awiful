@@ -30,7 +30,7 @@ app.use("/api/articles", articleRoutes);
 app.use("/api/marketing",marketing)
 app.use("/api/latest-activity",LatestActivity)
 app.use("/api/dashboard",dashboard)
-app.use("/api/analytics",getProjectAnalytics)
+app.use("/api",getProjectAnalytics)
 // Swagger
 setupSwagger(app as any);
 

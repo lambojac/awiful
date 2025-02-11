@@ -43,6 +43,6 @@ const router = express.Router();
  */
 
 
-router.get("/", getProjectAnalytics);
+router.get("/project-analytics", getProjectAnalytics);
 
 export default router;

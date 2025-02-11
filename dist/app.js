@@ -31,7 +31,7 @@ app.use("/api/articles", articleRoutes_1.default);
 app.use("/api/marketing", marketingRoutes_1.default);
 app.use("/api/latest-activity", LatestActivity_1.default);
 app.use("/api/dashboard", dashboard_1.default);
-app.use("/api/analytics", projectAnalytics_1.default);
+app.use("/api", projectAnalytics_1.default);
 (0, swagger_1.default)(app);
 (0, database_1.default)();
 const PORT = process.env.PORT || 5000;
