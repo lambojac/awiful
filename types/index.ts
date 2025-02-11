@@ -88,3 +88,24 @@ export interface LatestActivity {
     files?: { [fieldname: string]: Express.Multer.File[]  }; 
   }
   
+
+  // revenue
+  export interface IRevenueData {
+    period: string;
+    values: number[];
+  }
+  
+  export interface IRevenueCard  {
+    title: string;
+    xAxis: {
+      label: string;
+      values: string[];
+    };
+    yAxis: {
+      label: string;
+      unit: string;
+    };
+    data: IRevenueData[];
+    categories: string[];
+  }
+  
