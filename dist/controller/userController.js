@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logOut = exports.loginUser = exports.createUser = void 0;
+exports.getUserById = exports.getAllUsers = exports.logOut = exports.loginUser = exports.createUser = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
@@ -78,4 +78,35 @@ exports.logOut = (0, express_async_handler_1.default)(async (_req, res) => {
     });
     res.status(200).json({ message: "you are Sucessfully logged out" });
 });
+const getAllUsers = async (_req, res) => {
+    try {
+        const users = await user_1.default.find();
+        const formattedUsers = users.map((user) => ({
+            user_name: `${user.firstName} ${user.lastName}`,
+            email: user.email,
+            date_created: new Date(user.date_created).toISOString().split("T")[0],
+            phone: user.phone_number,
+            user_role: user.role,
+            user_id: user._id.toString(),
+        }));
+        res.status(200).json(formattedUsers);
+    }
+    catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+exports.getAllUsers = getAllUsers;
+const getUserById = async (req, res) => {
+    try {
+        const user = await user_1.default.findById(req.params.id).select('-password');
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        return res.status(200).json(user);
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+};
+exports.getUserById = getUserById;
 //# sourceMappingURL=userController.js.map

@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, loginUser, logOut } from '../controller/userController';
+import { createUser, getAllUsers, getUserById, loginUser, logOut } from '../controller/userController';
 
 const router = express.Router();
 
@@ -137,5 +137,93 @@ router.post('/login', loginUser);
  *                   example: "You are successfully logged out"
  */
 router.get('/logout', logOut);
+/**
+ * @swagger
+ * /users/get-all-users:
+ *   get:
+ *     summary: Get all users
+ *     description: Retrieve a list of all users with selected details.
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   user_name:
+ *                     type: string
+ *                     example: "Johnff Doe"
+ *                   email:
+ *                     type: string
+ *                     example: "johndoe@example.com"
+ *                   date_created:
+ *                     type: string
+ *                     format: date
+ *                     example: "2025-01-28"
+ *                   phone:
+ *                     type: string
+ *                     example: "+1234567890"
+ *                   user_role:
+ *                     type: string
+ *                     example: "user"
+ *                   user_id:
+ *                     type: string
+ *                     example: "6798fcd938efc0fde951e9e7"
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/get-all-users",getAllUsers)
+
+/**
+ * @swagger
+ * /users/{id}/get-users-by-id:
+ *   get:
+ *     summary: Get user by ID
+ *     description: Retrieve details of a specific user by ID.
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID
+ *     responses:
+ *       200:
+ *         description: User details retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user_name:
+ *                   type: string
+ *                   example: "Johnff Doe"
+ *                 email:
+ *                   type: string
+ *                   example: "johndoe@example.com"
+ *                 date_created:
+ *                   type: string
+ *                   format: date
+ *                   example: "2025-01-28"
+ *                 phone:
+ *                   type: string
+ *                   example: "+1234567890"
+ *                 user_role:
+ *                   type: string
+ *                   example: "user"
+ *                 user_id:
+ *                   type: string
+ *                   example: "6798fcd938efc0fde951e9e7"
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/:id/get-users-by-id",getUserById)
 
 export default router;

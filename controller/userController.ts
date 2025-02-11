@@ -101,66 +101,40 @@ export const loginUser = asynchandler(async (req: Request, res: Response): Promi
 
 
 
+//getallusers
+export const getAllUsers = async (_req: Request, res: Response): Promise<void> => {
+    try {
+      const users = await User.find();
+  
+      // Transform data to match required format
+      const formattedUsers = users.map((user) => ({
+        user_name: `${user.firstName} ${user.lastName}`,
+        email: user.email,
+        date_created: new Date(user.date_created).toISOString().split("T")[0], 
+        phone: user.phone_number,
+        user_role: user.role,
+        user_id: user._id.toString(),
+      }));
+  
+      res.status(200).json(formattedUsers);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// //getallusers
-// export const getAllUsers = async (res: Response) => {
-//   try {
-//     const users = await User.find();
-//     res.status(200).json(users);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
-
-
-// //getuserbyid
-// export const getUserById = async (req: Request, res: Response) => {
-//     try {
-//       const user = await User.findById(req.params.id);
-//       if (!user) {
-//         return res.status(404).json({ message: 'User not found' }); // Return here
-//       }
-//       return res.status(200).json(user); // Ensure this path also returns
-//     } catch (error) {
-//       return res.status(500).json({ error: error.message }); // Return in catch block
-//     }
-//   };
+//getuserbyid
+export const getUserById = async (req: Request, res: Response) => {
+    try {
+      const user = await User.findById(req.params.id).select('-password');
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' }); 
+      }
+      return res.status(200).json(user); 
+    } catch (error) {
+      return res.status(500).json({ error: error.message }); 
+    }
+  };
   
 // //update user
 // export const updateUser = async (req: Request, res: Response) => {
