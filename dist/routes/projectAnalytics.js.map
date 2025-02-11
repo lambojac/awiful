@@ -1,1 +1,1 @@
-{"version":3,"file":"projectAnalytics.js","sourceRoot":"","sources":["../../routes/projectAnalytics.ts"],"names":[],"mappings":";;;;;AAAA,sDAA8B;AAC9B,qEAAqE;AACrE,MAAM,MAAM,GAAG,iBAAO,CAAC,MAAM,EAAE,CAAC;AA2ChC,MAAM,CAAC,GAAG,CAAC,GAAG,EAAE,sCAAmB,CAAC,CAAC;AAErC,kBAAe,MAAM,CAAC"}
+{"version":3,"file":"projectAnalytics.js","sourceRoot":"","sources":["../../routes/projectAnalytics.ts"],"names":[],"mappings":";;;;;AAAA,sDAA8B;AAC9B,uEAAsE;AACtE,MAAM,MAAM,GAAG,iBAAO,CAAC,MAAM,EAAE,CAAC;AA2ChC,MAAM,CAAC,GAAG,CAAC,GAAG,EAAE,uCAAmB,CAAC,CAAC;AAErC,kBAAe,MAAM,CAAC"}
