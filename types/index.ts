@@ -74,6 +74,15 @@ export interface MarketingDataProps  {
   description: string;
 }
 
+export interface LatestActivity {
+  time: string;
+  title: string;
+  created_by: string;
+  description: string;
+  category: string;
+}
+
+
 
   export interface MulterRequest extends Request {
     files?: { [fieldname: string]: Express.Multer.File[]  }; 

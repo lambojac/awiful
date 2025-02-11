@@ -10,6 +10,7 @@ import statCard from "./routes/statCard"
 import timelineRoutes from "./routes/timelineRoutes"
 import articleRoutes from "./routes/articleRoutes"
 import marketing from "./routes/marketingRoutes"
+import LatestActivity from './routes/LatestActivity';
 const app: Application = express();
 
 // Middleware
@@ -25,6 +26,7 @@ app.use('/api/stat-card',statCard)
 app.use("/api/timelines", timelineRoutes);
 app.use("/api/articles", articleRoutes);
 app.use("/api/marketing",marketing)
+app.use("/api/latest-activity",LatestActivity)
 // Swagger
 setupSwagger(app as any);
 
