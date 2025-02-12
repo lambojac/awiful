@@ -112,3 +112,25 @@ export interface LatestActivity {
     categories: string[];
   }
   
+  // customer estimate
+  export interface IEstimate {
+    request_details: {
+      title: string;
+      service: string;
+      proposed_start_date: string;
+      proposed_end_date: string;
+      business_size: string;
+      budget: number;
+      country: string;
+      request_id: string;
+    };
+    client: {
+      first_name: string;
+      last_name: string;
+      email: string;
+      phone_number: string;
+    };
+    description: string;
+    additional_services: string[];
+    status: string;
+  }

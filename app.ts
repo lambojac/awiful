@@ -14,6 +14,7 @@ import LatestActivity from './routes/LatestActivity';
 import dashboard from "./routes/dashboard"
 import getProjectAnalytics from './routes/projectAnalytics';
 import revenue from "./routes/revenue"
+import estimate from "./routes/customerEstimate"
 const app: Application = express();
 
 // Middleware
@@ -33,6 +34,7 @@ app.use("/api/latest-activity",LatestActivity)
 app.use("/api/dashboard",dashboard)
 app.use("/api",getProjectAnalytics)
 app.use("/api/revenue",revenue)
+app.use("/api/estimate",estimate)
 // Swagger
 setupSwagger(app as any);
 

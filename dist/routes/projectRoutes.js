@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const projectController_1 = require("../controller/projectController");
 const authMiddleware_1 = __importDefault(require("../middleware/authMiddleware"));
 const router = express_1.default.Router();
-router.post('/', projectController_1.createProject);
+router.post('/', authMiddleware_1.default, projectController_1.createProject);
 router.get('/projects', projectController_1.getAllProjects);
 router.get('/:id', projectController_1.getProjectById);
 router.put('/:id', authMiddleware_1.default, projectController_1.updateProjectById);
