@@ -1,5 +1,5 @@
 import { Request } from "express";
-
+import mongoose from "mongoose";
 export interface StatCardData {
     id: string;
     title: string;
@@ -27,17 +27,20 @@ export interface StatCardData {
   }
   
   export interface ProjectManagementDataProps {
-    id: string;
-    user: string; // Reference to the user ID from UserDataProps
-    project_title: string;
-    service: string;
-    country: string;
-    start_date: string;
-    end_date: string;
-    price: string;
-    business_size: string;
-    description: string;
-    status: "pending payment" | "in progress" | "completed";
+  title: string;
+  email: string;
+  client: mongoose.Schema.Types.ObjectId;
+  service: string;
+  start_date: Date;
+  end_date: Date;
+  business_size: string;
+  price: number;
+  country: string;
+  description: string;
+  socials?: Record<string, { username: string; password: string }>;
+  status: "pending" | "in_progress" | "completed" | "canceled";
+  status_percentage: number;
+  handled_by: { user_name: string; user_id: mongoose.Schema.Types.ObjectId }[];
 }
 
   

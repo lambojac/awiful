@@ -1,7 +1,7 @@
 import express from 'express';
 import { 
   createProject, 
-  getProjects, 
+  getAllProjects, 
   getProjectById, 
   updateProjectById, 
   deleteProjectById 
@@ -17,8 +17,8 @@ const router = express.Router();
  *     Project:
  *       type: object
  *       required:
- *         - user
- *         - project_title
+ *         - title
+ *         - email
  *         - service
  *         - country
  *         - start_date
@@ -26,23 +26,32 @@ const router = express.Router();
  *         - price
  *         - business_size
  *         - description
- *         - status
  *       properties:
  *         _id:
  *           type: string
  *           description: Auto-generated ID of the project
- *         user:
- *           type: string
- *           description: User ID of the project owner
- *         project_title:
+ *         title:
  *           type: string
  *           description: Title of the project
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Email of the project owner
+ *         username:
+ *           type: string
+ *           description: Username of the project owner
+ *         firstName:
+ *           type: string
+ *           description: First name of the client
+ *         lastName:
+ *           type: string
+ *           description: Last name of the client
+ *         phone_number:
+ *           type: string
+ *           description: Phone number of the client
  *         service:
  *           type: string
  *           description: The type of service provided in the project
- *         country:
- *           type: string
- *           description: Country of the project
  *         start_date:
  *           type: string
  *           format: date
@@ -51,30 +60,83 @@ const router = express.Router();
  *           type: string
  *           format: date
  *           description: Project end date
- *         price:
- *           type: string
- *           description: Price for the project
  *         business_size:
  *           type: string
- *           description: Size of the business (e.g., Small, Medium, Large)
+ *           description: Size of the business (e.g., Small, Medium, Enterprise)
+ *         price:
+ *           type: number
+ *           description: Price for the project
+ *         country:
+ *           type: string
+ *           description: Country of the project
  *         description:
  *           type: string
  *           description: Detailed project description
+ *         socials:
+ *           type: object
+ *           properties:
+ *             instagram:
+ *               type: object
+ *               properties:
+ *                 username:
+ *                   type: string
+ *                   description: Instagram username
+ *             linkedin:
+ *               type: object
+ *               properties:
+ *                 username:
+ *                   type: string
+ *                   description: LinkedIn username
  *         status:
  *           type: string
  *           description: Current project status
+ *           default: in_progress
+ *         status_percentage:
+ *           type: number
+ *           description: Status completion percentage
+ *           default: 10
+ *         handled_by:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: List of users handling the project
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Creation timestamp
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Last update timestamp
+ *         project_id:
+ *           type: string
+ *           description: Project ID
  *       example:
- *         _id: "67a48acf140e270c6e63a831"
- *         user: "6798fcd938efc0fde951e9e7"
- *         project_title: "Website Development"
- *         service: "Full-Stack Web Development"
- *         country: "United States"
- *         start_date: "2024-08-10"
- *         end_date: "2024-09-15"
- *         price: "5000"
- *         business_size: "Medium"
- *         description: "Developing a full-stack website with authentication, database integration, and payment gateway."
- *         status: "pending"
+ *         title: "E-commerce Platform Development for Fashion Brand"
+ *         email: "michaelk@example.com"
+ *         username: "mikehh"
+ *         firstName: "Michael"
+ *         lastName: "Khanlie"
+ *         phone_number: "+447911123456"
+ *         service: "E-commerce Development"
+ *         start_date: "2025-04-10"
+ *         end_date: "2025-08-15"
+ *         business_size: "Enterprise"
+ *         price: 45000
+ *         country: "United Kingdom"
+ *         description: "Developing a scalable e-commerce platform with custom features for a leading fashion brand."
+ *         socials:
+ *           instagram:
+ *             username: "michael_fashion"
+ *           linkedin:
+ *             username: "michael_khan"
+ *         status: "in_progress"
+ *         status_percentage: 10
+ *         handled_by: []
+ *         _id: "67ac4a2211d1be597b4992dc"
+ *         createdAt: "2025-02-12T07:13:38.135Z"
+ *         updatedAt: "2025-02-12T07:13:38.135Z"
+ *         project_id: "67ac4a2211d1be597b4992dc"
  */
 
 /**
@@ -94,12 +156,22 @@ const router = express.Router();
  *     responses:
  *       201:
  *         description: Project created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Project created successfully"
+ *                 project:
+ *                   $ref: '#/components/schemas/Project'
  *       400:
  *         description: Bad request (missing or invalid fields)
  *       500:
  *         description: Internal server error
  */
-router.post('/', Secure, createProject);
+router.post('/',Secure,  createProject);
 
 /**
  * @swagger
@@ -115,7 +187,7 @@ router.post('/', Secure, createProject);
  *       500:
  *         description: Internal server error
  */
-router.get('/projects', Secure, getProjects);
+router.get('/projects',  getAllProjects);
 
 /**
  * @swagger
@@ -140,7 +212,7 @@ router.get('/projects', Secure, getProjects);
  *       500:
  *         description: Internal server error
  */
-router.get('/:id', Secure, getProjectById);
+router.get('/:id',  getProjectById);
 
 /**
  * @swagger

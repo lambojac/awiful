@@ -1,44 +1,73 @@
 import { Request, Response } from 'express';
 import ProjectManagement from '../models/projectManagement';
-// create a new project
-export const createProject = async (req: Request, res: Response): Promise<Response> => {
-    try {
-      const { userId, ...projectData } = req.body; // Extract userId separately
+import asyncHandler from "express-async-handler";
+import User from "../models/user"
+
+// create a new
+// Create Project
+export const createProject = asyncHandler(async (req: Request, res: Response) => {
+    const { title, email, username, firstName, lastName, phone_number, service, start_date, end_date, business_size, price, country, description, socials } = req.body;
   
-      const projectManagement = new ProjectManagement({
-        ...projectData,
-        user: userId, // Ensure user reference is stored
-      });
+    // Check if user exists
+    let user = await User.findOne({ email });
   
-      await projectManagement.save();
-      return res.status(201).json({ success: true, data: projectManagement });
-    } catch (error) {
-      return res.status(400).json({ error: (error as Error).message });
+    // If user doesn't exist, create new user
+    if (!user) {
+      user = new User({ firstName, lastName, email, phone_number,username });
+      await user.save();
     }
-  };
+  
+    // Create project
+    const project = new ProjectManagement({
+      title,
+      email,
+      client: user._id,
+      service,
+      start_date,
+      end_date,
+      business_size,
+      price,
+      country,
+      description,
+      socials: socials || null, // Assign socials only if provided
+      status: "in_progress",
+      status_percentage: 10,
+      handled_by: []
+    });
+  
+    await project.save();
+    const projectObject = project.toObject();
+
+  res.status(201).json({
+    message: 'Project created successfully',
+    project: {
+      ...projectObject,
+      project_id: project._id  // Use MongoDB's _id as project_id
+    }
+  });
+})
   
 // getallproject
-export const getProjects = async (_req: Request, res: Response): Promise<Response> => {
-  try {
-    const projects = await ProjectManagement.find().populate("user", "firstName lastName email phone_number role").lean();
-    return res.status(200).json({ success: true, data: projects });
-  } catch (error) {
-    return res.status(500).json({ error: (error as Error).message });
-  }
-};
-// getprojectbyid
-export const getProjectById = async (req: Request, res: Response): Promise<Response> => {
-    try {
-      const project = await ProjectManagement.findById(req.params.id)
-        .populate("user", "firstName lastName email phone_number role") // Populate user details
-        .lean();
+export const getAllProjects = asyncHandler(async (_req: Request, res: Response) => {
+    const projects = await ProjectManagement.find().select("title email project_id createdAt service");
   
-      if (!project) return res.status(404).json({ error: "Entry not found" });
-      return res.status(200).json({ success: true, data: project });
-    } catch (error) {
-      return res.status(500).json({ error: (error as Error).message });
+    res.status(200).json({ projects });
+  });
+  
+// getprojectbyid
+export const getProjectById = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+  
+    // Fetch project with user details populated
+    const project = await ProjectManagement.findById(id).populate("client", "firstName lastName phone_number email");
+  
+    if (!project) {
+      res.status(404);
+      throw new Error("Project not found");
     }
-  };
+  
+    res.status(200).json({ project_details: project });
+  });
   
 // update project byid
   export const updateProjectById = async (req: Request, res: Response): Promise<Response> => {
