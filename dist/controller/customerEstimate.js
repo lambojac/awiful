@@ -12,7 +12,9 @@ exports.getAllEstimates = (0, express_async_handler_1.default)(async (_req, res)
     const completed = estimates.filter(e => e.status === 'completed').length;
     const closed = estimates.filter(e => e.status === 'closed').length;
     const inProgress = estimates.filter(e => e.status === 'in_progress').length;
+    const pending = estimates.filter(e => e.status === 'pending').length;
     const requests = estimates.map(estimate => ({
+        id: estimate._id,
         email: estimate.client.email,
         date: new Date().toLocaleDateString(),
         service_requested: estimate.request_details.service,
@@ -24,7 +26,8 @@ exports.getAllEstimates = (0, express_async_handler_1.default)(async (_req, res)
             total_requests: totalRequests,
             completed,
             closed,
-            in_progress: inProgress
+            in_progress: inProgress,
+            pending
         },
         requests
     });
@@ -38,6 +41,7 @@ exports.getEstimateById = (0, express_async_handler_1.default)(async (req, res) 
             return;
         }
         res.status(200).json({
+            id: estimate._id,
             request_details: estimate.request_details,
             client: estimate.client,
             description: estimate.description,
