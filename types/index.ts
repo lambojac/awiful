@@ -29,6 +29,7 @@ export interface StatCardData {
   export interface ProjectManagementDataProps {
   title: string;
   email: string;
+  type:string;
   client: mongoose.Schema.Types.ObjectId;
   service: string;
   start_date: Date;

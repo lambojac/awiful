@@ -6,6 +6,7 @@ export interface ProjectManagementDocument extends ProjectManagementDataProps {}
 const ProjectManagementSchema = new Schema({
   title: { type: String, required: true },
   email: { type: String, required: true },
+  type: { type: String},
   client: { type: Schema.Types.ObjectId, ref: "User", required: true },
   service: { type: String, required: true },
   start_date: { type: Date, required: true },

@@ -6,7 +6,7 @@ import User from "../models/user"
 // create a new
 // Create Project
 export const createProject = asyncHandler(async (req: Request, res: Response) => {
-    const { title, email, username, firstName, lastName, phone_number, service, start_date, end_date, business_size, price, country, description, socials } = req.body;
+    const { title, email, username, firstName, lastName, phone_number, service, start_date, end_date, business_size, price, country, description, socials,type } = req.body;
   
     // Check if user exists
     let user = await User.findOne({ email });
@@ -26,6 +26,7 @@ export const createProject = asyncHandler(async (req: Request, res: Response) =>
       start_date,
       end_date,
       business_size,
+      type,
       price,
       country,
       description,
@@ -70,22 +71,76 @@ export const getProjectById = asyncHandler(async (req: Request, res: Response) =
   });
   
 // update project byid
-  export const updateProjectById = async (req: Request, res: Response): Promise<Response> => {
-    try {
-      const { userId, ...updateData } = req.body;
-  
-      const updatedProject = await ProjectManagement.findByIdAndUpdate(
-        req.params.id,
-        { ...updateData, user: userId }, // Ensure user reference remains intact
-        { new: true }
-      ).populate("user", "firstName lastName email phone_number role").lean();
-  
-      if (!updatedProject) return res.status(404).json({ error: "Entry not found" });
-      return res.status(200).json({ success: true, data: updatedProject });
-    } catch (error) {
-      return res.status(500).json({ error: (error as Error).message });
+export const updateProjectById = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const {
+        title,
+        email,
+        firstName,
+        lastName,
+        phone_number,
+        service,
+        start_date,
+        end_date,
+        business_size,
+        price,
+        country,
+        description,
+        socials,
+        type,
+        status,
+        status_percentage
+    } = req.body;
+
+    // Find the project
+    const project = await ProjectManagement.findById(id);
+
+    if (!project) {
+        res.status(404);
+        throw new Error("Project not found");
     }
-  };
+
+    // Update client details if provided
+    if (email || firstName || lastName || phone_number) {
+        const user = await User.findById(project.client);
+
+        if (user) {
+            user.email = email || user.email;
+            user.firstName = firstName || user.firstName;
+            user.lastName = lastName || user.lastName;
+            user.phone_number = phone_number || user.phone_number;
+
+            await user.save();
+        }
+    }
+
+    // Update project details
+    project.title = title || project.title;
+    project.service = service || project.service;
+    project.start_date = start_date || project.start_date;
+    project.end_date = end_date || project.end_date;
+    project.business_size = business_size || project.business_size;
+    project.price = price || project.price;
+    project.country = country || project.country;
+    project.description = description || project.description;
+    project.socials = socials || project.socials;
+    project.type = type || project.type;
+    project.status = status || project.status;
+    project.status_percentage = status_percentage || project.status_percentage;
+
+    await project.save();
+
+    // Populate client details before sending the response
+    const updatedProject = await ProjectManagement.findById(id)
+        .populate("client", "firstName lastName phone_number email")
+        .lean();
+
+    res.status(200).json({
+        message: "Project updated successfully",
+        project_details: updatedProject
+    });
+});
+
   
 // delete project
   export const deleteProjectById = async (req: Request, res: Response): Promise<Response> => {

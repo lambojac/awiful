@@ -8,7 +8,7 @@ const projectManagement_1 = __importDefault(require("../models/projectManagement
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const user_1 = __importDefault(require("../models/user"));
 exports.createProject = (0, express_async_handler_1.default)(async (req, res) => {
-    const { title, email, username, firstName, lastName, phone_number, service, start_date, end_date, business_size, price, country, description, socials } = req.body;
+    const { title, email, username, firstName, lastName, phone_number, service, start_date, end_date, business_size, price, country, description, socials, type } = req.body;
     let user = await user_1.default.findOne({ email });
     if (!user) {
         user = new user_1.default({ firstName, lastName, email, phone_number, username });
@@ -22,6 +22,7 @@ exports.createProject = (0, express_async_handler_1.default)(async (req, res) =>
         start_date,
         end_date,
         business_size,
+        type,
         price,
         country,
         description,
@@ -53,19 +54,45 @@ exports.getProjectById = (0, express_async_handler_1.default)(async (req, res) =
     }
     res.status(200).json({ project_details: project });
 });
-const updateProjectById = async (req, res) => {
-    try {
-        const { userId, ...updateData } = req.body;
-        const updatedProject = await projectManagement_1.default.findByIdAndUpdate(req.params.id, { ...updateData, user: userId }, { new: true }).populate("user", "firstName lastName email phone_number role").lean();
-        if (!updatedProject)
-            return res.status(404).json({ error: "Entry not found" });
-        return res.status(200).json({ success: true, data: updatedProject });
+exports.updateProjectById = (0, express_async_handler_1.default)(async (req, res) => {
+    const { id } = req.params;
+    const { title, email, firstName, lastName, phone_number, service, start_date, end_date, business_size, price, country, description, socials, type, status, status_percentage } = req.body;
+    const project = await projectManagement_1.default.findById(id);
+    if (!project) {
+        res.status(404);
+        throw new Error("Project not found");
     }
-    catch (error) {
-        return res.status(500).json({ error: error.message });
+    if (email || firstName || lastName || phone_number) {
+        const user = await user_1.default.findById(project.client);
+        if (user) {
+            user.email = email || user.email;
+            user.firstName = firstName || user.firstName;
+            user.lastName = lastName || user.lastName;
+            user.phone_number = phone_number || user.phone_number;
+            await user.save();
+        }
     }
-};
-exports.updateProjectById = updateProjectById;
+    project.title = title || project.title;
+    project.service = service || project.service;
+    project.start_date = start_date || project.start_date;
+    project.end_date = end_date || project.end_date;
+    project.business_size = business_size || project.business_size;
+    project.price = price || project.price;
+    project.country = country || project.country;
+    project.description = description || project.description;
+    project.socials = socials || project.socials;
+    project.type = type || project.type;
+    project.status = status || project.status;
+    project.status_percentage = status_percentage || project.status_percentage;
+    await project.save();
+    const updatedProject = await projectManagement_1.default.findById(id)
+        .populate("client", "firstName lastName phone_number email")
+        .lean();
+    res.status(200).json({
+        message: "Project updated successfully",
+        project_details: updatedProject
+    });
+});
 const deleteProjectById = async (req, res) => {
     try {
         const deletedProject = await projectManagement_1.default.findByIdAndDelete(req.params.id);
