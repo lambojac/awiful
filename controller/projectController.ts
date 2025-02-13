@@ -49,13 +49,34 @@ export const createProject = asyncHandler(async (req: Request, res: Response) =>
 
   
 // getallproject and marketing
+export const getAllProjects = asyncHandler(async (req: Request, res: Response) => {
+    let { type } = req.query;
 
-export const getAllProjects = asyncHandler(async (_req: Request, res: Response) => {
-    const projects = await ProjectManagement.find()
-      .select("title email project_id createdAt service type");
-  
+    // If type is an array, take the first value
+    if (Array.isArray(type)) {
+        type = type[0];
+    }
+
+    // Build the query object
+    const query: any = {};
+
+    // If type is provided and is either 'marketing' or 'project', filter by type
+    if (type === "marketing" || type === "project") {
+        query.type = type;
+    } else {
+        // If no type is passed, get both 'marketing' and 'project'
+        query.type = { $in: ["marketing", "project"] };
+    }
+
+    // Fetch projects based on the query
+    const projects = await ProjectManagement.find(query)
+        .select("title email project_id createdAt service type");
+
     res.status(200).json({ projects });
 });
+
+
+
 
   
   

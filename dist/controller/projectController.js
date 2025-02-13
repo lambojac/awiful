@@ -40,8 +40,19 @@ exports.createProject = (0, express_async_handler_1.default)(async (req, res) =>
         }
     });
 });
-exports.getAllProjects = (0, express_async_handler_1.default)(async (_req, res) => {
-    const projects = await projectManagement_1.default.find()
+exports.getAllProjects = (0, express_async_handler_1.default)(async (req, res) => {
+    let { type } = req.query;
+    if (Array.isArray(type)) {
+        type = type[0];
+    }
+    const query = {};
+    if (type === "marketing" || type === "project") {
+        query.type = type;
+    }
+    else {
+        query.type = { $in: ["marketing", "project"] };
+    }
+    const projects = await projectManagement_1.default.find(query)
         .select("title email project_id createdAt service type");
     res.status(200).json({ projects });
 });
