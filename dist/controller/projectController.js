@@ -42,12 +42,12 @@ exports.createProject = (0, express_async_handler_1.default)(async (req, res) =>
     });
 });
 exports.getAllProjects = (0, express_async_handler_1.default)(async (_req, res) => {
-    const projects = await projectManagement_1.default.find().select("title email project_id createdAt service");
+    const projects = await projectManagement_1.default.find().select("title email project_id createdAt service type");
     res.status(200).json({ projects });
 });
 exports.getProjectById = (0, express_async_handler_1.default)(async (req, res) => {
     const { id } = req.params;
-    const project = await projectManagement_1.default.findById(id).populate("client", "firstName lastName phone_number email");
+    const project = await projectManagement_1.default.findById(id).populate("client", "firstName lastName phone_number email type");
     if (!project) {
         res.status(404);
         throw new Error("Project not found");

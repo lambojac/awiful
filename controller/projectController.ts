@@ -50,7 +50,7 @@ export const createProject = asyncHandler(async (req: Request, res: Response) =>
   
 // getallproject
 export const getAllProjects = asyncHandler(async (_req: Request, res: Response) => {
-    const projects = await ProjectManagement.find().select("title email project_id createdAt service");
+    const projects = await ProjectManagement.find().select("title email project_id createdAt service type");
   
     res.status(200).json({ projects });
   });
@@ -60,7 +60,7 @@ export const getProjectById = asyncHandler(async (req: Request, res: Response) =
     const { id } = req.params;
   
     // Fetch project with user details populated
-    const project = await ProjectManagement.findById(id).populate("client", "firstName lastName phone_number email");
+    const project = await ProjectManagement.findById(id).populate("client", "firstName lastName phone_number email type");
   
     if (!project) {
       res.status(404);
