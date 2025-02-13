@@ -3,21 +3,21 @@ import ProjectManagement from '../models/projectManagement';
 import asyncHandler from "express-async-handler";
 import User from "../models/user"
 
-// create a new
 // Create Project
+
 export const createProject = asyncHandler(async (req: Request, res: Response) => {
-    const { title, email, username, firstName, lastName, phone_number, service, start_date, end_date, business_size, price, country, description, socials,type } = req.body;
+    const { title, email, username, firstName, lastName, phone_number, service, start_date, end_date, business_size, price, country, description } = req.body;
   
     // Check if user exists
     let user = await User.findOne({ email });
   
     // If user doesn't exist, create new user
     if (!user) {
-      user = new User({ firstName, lastName, email, phone_number,username });
+      user = new User({ firstName, lastName, email, phone_number, username });
       await user.save();
     }
   
-    // Create project
+    // Create project with default type "project"
     const project = new ProjectManagement({
       title,
       email,
@@ -26,11 +26,10 @@ export const createProject = asyncHandler(async (req: Request, res: Response) =>
       start_date,
       end_date,
       business_size,
-      type,
+      type: "project", // Default type
       price,
       country,
       description,
-      socials: socials || null, // Assign socials only if provided
       status: "in_progress",
       status_percentage: 10,
       handled_by: []
@@ -39,36 +38,45 @@ export const createProject = asyncHandler(async (req: Request, res: Response) =>
     await project.save();
     const projectObject = project.toObject();
 
-  res.status(201).json({
-    message: 'Project created successfully',
-    project: {
-      ...projectObject,
-      project_id: project._id  // Use MongoDB's _id as project_id
-    }
-  });
-})
+    res.status(201).json({
+      message: 'Project created successfully',
+      project: {
+        ...projectObject,
+        project_id: project._id  // Use MongoDB's _id as project_id
+      }
+    });
+});
+
   
-// getallproject
+// getallproject and marketing
+
 export const getAllProjects = asyncHandler(async (_req: Request, res: Response) => {
-    const projects = await ProjectManagement.find().select("title email project_id createdAt service type");
+    const projects = await ProjectManagement.find()
+      .select("title email project_id createdAt service type");
   
     res.status(200).json({ projects });
-  });
+});
+
+  
   
 // getprojectbyid
+// Get project by ID if type is 'project'
+// Get project by ID regardless of type
 export const getProjectById = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
-  
+
     // Fetch project with user details populated
-    const project = await ProjectManagement.findById(id).populate("client", "firstName lastName phone_number email type");
-  
+    const project = await ProjectManagement.findById(id)
+      .populate("client", "firstName lastName phone_number email");
+
     if (!project) {
       res.status(404);
       throw new Error("Project not found");
     }
-  
+
     res.status(200).json({ project_details: project });
-  });
+});
+
   
 // update project byid
 export const updateProjectById = asyncHandler(async (req: Request, res: Response) => {
@@ -86,10 +94,10 @@ export const updateProjectById = asyncHandler(async (req: Request, res: Response
         price,
         country,
         description,
-        socials,
         type,
         status,
-        status_percentage
+        status_percentage,
+        socials  // Social links to be added when type is "marketing"
     } = req.body;
 
     // Find the project
@@ -123,10 +131,17 @@ export const updateProjectById = asyncHandler(async (req: Request, res: Response
     project.price = price || project.price;
     project.country = country || project.country;
     project.description = description || project.description;
-    project.socials = socials || project.socials;
-    project.type = type || project.type;
     project.status = status || project.status;
     project.status_percentage = status_percentage || project.status_percentage;
+
+    // Update type and attach socials if it's marketing
+    if (type === "marketing") {
+        project.type = "marketing";
+        project.socials = socials || project.socials;
+    } else if (type === "project") {
+        project.type = "project";
+        project.socials = undefined; // Remove socials if reverted to project
+    }
 
     await project.save();
 
@@ -140,6 +155,7 @@ export const updateProjectById = asyncHandler(async (req: Request, res: Response
         project_details: updatedProject
     });
 });
+
 
   
 // delete project

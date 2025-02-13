@@ -8,7 +8,7 @@ const projectManagement_1 = __importDefault(require("../models/projectManagement
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const user_1 = __importDefault(require("../models/user"));
 exports.createProject = (0, express_async_handler_1.default)(async (req, res) => {
-    const { title, email, username, firstName, lastName, phone_number, service, start_date, end_date, business_size, price, country, description, socials, type } = req.body;
+    const { title, email, username, firstName, lastName, phone_number, service, start_date, end_date, business_size, price, country, description } = req.body;
     let user = await user_1.default.findOne({ email });
     if (!user) {
         user = new user_1.default({ firstName, lastName, email, phone_number, username });
@@ -22,11 +22,10 @@ exports.createProject = (0, express_async_handler_1.default)(async (req, res) =>
         start_date,
         end_date,
         business_size,
-        type,
+        type: "project",
         price,
         country,
         description,
-        socials: socials || null,
         status: "in_progress",
         status_percentage: 10,
         handled_by: []
@@ -42,12 +41,14 @@ exports.createProject = (0, express_async_handler_1.default)(async (req, res) =>
     });
 });
 exports.getAllProjects = (0, express_async_handler_1.default)(async (_req, res) => {
-    const projects = await projectManagement_1.default.find().select("title email project_id createdAt service type");
+    const projects = await projectManagement_1.default.find()
+        .select("title email project_id createdAt service type");
     res.status(200).json({ projects });
 });
 exports.getProjectById = (0, express_async_handler_1.default)(async (req, res) => {
     const { id } = req.params;
-    const project = await projectManagement_1.default.findById(id).populate("client", "firstName lastName phone_number email type");
+    const project = await projectManagement_1.default.findById(id)
+        .populate("client", "firstName lastName phone_number email");
     if (!project) {
         res.status(404);
         throw new Error("Project not found");
@@ -56,7 +57,7 @@ exports.getProjectById = (0, express_async_handler_1.default)(async (req, res) =
 });
 exports.updateProjectById = (0, express_async_handler_1.default)(async (req, res) => {
     const { id } = req.params;
-    const { title, email, firstName, lastName, phone_number, service, start_date, end_date, business_size, price, country, description, socials, type, status, status_percentage } = req.body;
+    const { title, email, firstName, lastName, phone_number, service, start_date, end_date, business_size, price, country, description, type, status, status_percentage, socials } = req.body;
     const project = await projectManagement_1.default.findById(id);
     if (!project) {
         res.status(404);
@@ -80,10 +81,16 @@ exports.updateProjectById = (0, express_async_handler_1.default)(async (req, res
     project.price = price || project.price;
     project.country = country || project.country;
     project.description = description || project.description;
-    project.socials = socials || project.socials;
-    project.type = type || project.type;
     project.status = status || project.status;
     project.status_percentage = status_percentage || project.status_percentage;
+    if (type === "marketing") {
+        project.type = "marketing";
+        project.socials = socials || project.socials;
+    }
+    else if (type === "project") {
+        project.type = "project";
+        project.socials = undefined;
+    }
     await project.save();
     const updatedProject = await projectManagement_1.default.findById(id)
         .populate("client", "firstName lastName phone_number email")

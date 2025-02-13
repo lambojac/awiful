@@ -24,56 +24,60 @@ router.get('/', getMarketingData);
 /**
  * @swagger
  * /marketing/{id}:
- *   get:
- *     summary: Get marketing data by ID
- *     tags: [MarketingData]
+  *   get:
+ *     summary: Get a project by ID
+ *     tags: [marketing]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: Marketing data ID
+ *         description: marketing ID
  *     responses:
  *       200:
- *         description: Marketing data details
+ *         description: marketing retrieved successfully
  *       404:
- *         description: Marketing data not found
+ *         description: marketing not found
+ *       500:
+ *         description: Internal server error
  */
 router.get('/:id', getMarketingDataById);
+
 
 /**
  * @swagger
  * /marketing:
  *   post:
- *     summary: Create a new marketing data entry
- *     tags: [MarketingData]
+ *     summary: Create a new marketing
+ *     tags: [marketing]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               user:
- *                 type: string
- *               project_title:
- *                 type: string
- *               service:
- *                 type: string
- *               start_date:
- *                 type: string
- *               end_date:
- *                 type: string
- *               budget:
- *                 type: string
- *               business_size:
- *                 type: string
- *               description:
- *                 type: string
+ *             $ref: '#/components/schemas/Project'
  *     responses:
  *       201:
- *         description: Marketing data created
+ *         description: marketing created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "marketingcreated successfully"
+ *                 project:
+ *                   $ref: '#/components/schemas/marketing'
+ *       400:
+ *         description: Bad request (missing or invalid fields)
+ *       500:
+ *         description: Internal server error
  */
 router.post('/', createMarketingData);
 
