@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteArticle = exports.updateArticle = exports.createArticle = exports.getArticleById = exports.getArticles = void 0;
 const article_1 = __importDefault(require("../models/article"));
+const cloudinary_1 = __importDefault(require("../config/cloudinary"));
 const getArticles = async (_req, res) => {
     try {
         const articles = await article_1.default.find();
@@ -31,9 +32,15 @@ exports.getArticleById = getArticleById;
 const createArticle = async (req, res) => {
     try {
         const { title, descHeading, desc, topArticle, content, category, status, keywords, tags } = req.body;
-        const image = req.file ? req.file.buffer.toString('base64') : null;
+        if (!req.file) {
+            return res.status(400).json({ message: "No image file provided" });
+        }
+        const result = await cloudinary_1.default.uploader.upload(req.file.path, {
+            folder: "articles",
+            resource_type: "image",
+        });
         const newArticle = new article_1.default({
-            image,
+            image: result.secure_url,
             title,
             descHeading,
             desc,
@@ -45,10 +52,10 @@ const createArticle = async (req, res) => {
             tags
         });
         const savedArticle = await newArticle.save();
-        res.status(201).json(savedArticle);
+        return res.status(201).json(savedArticle);
     }
     catch (error) {
-        res.status(500).json({ message: "Server error", error });
+        return res.status(500).json({ message: "Server error", error });
     }
 };
 exports.createArticle = createArticle;

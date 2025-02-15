@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import Article from "../models/article";
-
-
+import cloudinary from "../config/cloudinary";
 
 /**
  * @desc    Get all articles
@@ -43,12 +42,20 @@ export const createArticle = async (req: Request, res: Response) => {
     try {
       const { title, descHeading, desc, topArticle,content,category,status,keywords,tags } = req.body;
   
-      // Extract file and convert to Base64
-      const image =req.file ? req.file.buffer.toString('base64') : null;
-
+      // Check if file is present
+    if (!req.file) {
+        return res.status(400).json({ message: "No image file provided" });
+      }
+  
+      // Upload to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "articles",
+        resource_type: "image",
+      });
+  
   
       const newArticle = new Article({
-        image,
+        image: result.secure_url, 
         title,
         descHeading,
         desc,
@@ -61,9 +68,9 @@ export const createArticle = async (req: Request, res: Response) => {
       });
   
       const savedArticle = await newArticle.save();
-      res.status(201).json(savedArticle);
+     return res.status(201).json(savedArticle);
     } catch (error) {
-      res.status(500).json({ message: "Server error", error });
+     return res.status(500).json({ message: "Server error", error });
     }
   };
   
