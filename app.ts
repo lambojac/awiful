@@ -16,9 +16,12 @@ import getProjectAnalytics from './routes/projectAnalytics';
 import revenue from "./routes/revenue"
 import estimate from "./routes/customerEstimate"
 import stripeRoutes from './routes/stripe';
-import asyncHandler from "express-async-handler";
-import bodyParser from 'body-parser';
+import StripeController from './controller/stripe';
 const app: Application = express();
+app.use('/api/stripe/webhook', 
+  express.raw({ type: 'application/json' }), 
+  StripeController.handleWebhook
+);
 
 // Middleware
 app.use(cors());
@@ -39,10 +42,6 @@ app.use("/api",getProjectAnalytics)
 app.use("/api/revenue",revenue)
 app.use("/api/estimate",estimate)
 // This is necessary for Stripe Webhook handling
-app.use('/webhook', 
-  bodyParser.raw({ type: 'application/json' }), 
-  asyncHandler(stripeRoutes)
-);
 
 app.use('/api/stripe', stripeRoutes);
 // Swagger
