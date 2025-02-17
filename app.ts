@@ -16,19 +16,15 @@ import getProjectAnalytics from './routes/projectAnalytics';
 import revenue from "./routes/revenue"
 import estimate from "./routes/customerEstimate"
 import stripeRoutes from './routes/stripe';
-import StripeController from './controller/stripe';
+
 const app: Application = express();
-app.use('/api/stripe/webhook', 
-  express.raw({ type: 'application/json' }), 
-  StripeController.handleWebhook
-);
 
 // Middleware
 app.use(cors());
 app.use(helmet());
 app.use(morgan('dev'));
 app.use(express.json());
-
+app.use('/webhook', express.raw({ type: 'application/json' }), stripeRoutes);
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/project', projectRoutes);

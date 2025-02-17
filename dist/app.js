@@ -21,13 +21,12 @@ const projectAnalytics_1 = __importDefault(require("./routes/projectAnalytics"))
 const revenue_1 = __importDefault(require("./routes/revenue"));
 const customerEstimate_1 = __importDefault(require("./routes/customerEstimate"));
 const stripe_1 = __importDefault(require("./routes/stripe"));
-const stripe_2 = __importDefault(require("./controller/stripe"));
 const app = (0, express_1.default)();
-app.use('/api/stripe/webhook', express_1.default.raw({ type: 'application/json' }), stripe_2.default.handleWebhook);
 app.use((0, cors_1.default)());
 app.use((0, helmet_1.default)());
 app.use((0, morgan_1.default)('dev'));
 app.use(express_1.default.json());
+app.use('/webhook', express_1.default.raw({ type: 'application/json' }), stripe_1.default);
 app.use('/api/users', userRoutes_1.default);
 app.use('/api/project', projectRoutes_1.default);
 app.use('/api/stat-card', statCard_1.default);
