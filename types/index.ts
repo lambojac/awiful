@@ -42,6 +42,9 @@ export interface StatCardData {
   status: "pending" | "in_progress" | "completed" | "canceled";
   status_percentage: number;
   handled_by: { user_name: string; user_id: mongoose.Schema.Types.ObjectId }[];
+  payment_status:string;
+  stripe_payment_intent_id:string;
+  stripe_client_secret:string;
 }
 
   

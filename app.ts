@@ -15,6 +15,9 @@ import dashboard from "./routes/dashboard"
 import getProjectAnalytics from './routes/projectAnalytics';
 import revenue from "./routes/revenue"
 import estimate from "./routes/customerEstimate"
+import stripeRoutes from './routes/stripe';
+import asyncHandler from "express-async-handler";
+import bodyParser from 'body-parser';
 const app: Application = express();
 
 // Middleware
@@ -35,6 +38,13 @@ app.use("/api/dashboard",dashboard)
 app.use("/api",getProjectAnalytics)
 app.use("/api/revenue",revenue)
 app.use("/api/estimate",estimate)
+// This is necessary for Stripe Webhook handling
+app.use('/webhook', 
+  bodyParser.raw({ type: 'application/json' }), 
+  asyncHandler(stripeRoutes)
+);
+
+app.use('/api/stripe', stripeRoutes);
 // Swagger
 setupSwagger(app as any);
 

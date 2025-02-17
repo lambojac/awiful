@@ -18,7 +18,14 @@ const ProjectManagementSchema = new Schema({
   socials: { type: Schema.Types.Mixed, default: null }, 
   status: { type: String, enum: ["pending", "in_progress", "completed", "canceled"], default: "in_progress" },
   status_percentage: { type: Number, default: 10 },
-  handled_by: [{ user_name: String, user_id: { type: Schema.Types.ObjectId, ref: "User" } }]
+  handled_by: [{ user_name: String, user_id: { type: Schema.Types.ObjectId, ref: "User" } }],
+  payment_status: { 
+    type: String, 
+    enum: ["pending", "processing", "paid", "failed"], 
+    default: "pending" 
+  },
+  stripe_payment_intent_id: { type: String },
+  stripe_client_secret: { type: String }
 },{
     timestamps: true
   });
