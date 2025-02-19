@@ -6,8 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const stripe_1 = __importDefault(require("../controller/stripe"));
 const router = (0, express_1.Router)();
-router.post('/create-payment-intent', stripe_1.default.createPaymentIntent);
-router.post('/webhook', stripe_1.default.handleWebhook);
+router.post('/checkout', stripe_1.default.createCheckoutSession);
+router.get('/complete', stripe_1.default.completePayment);
 router.get('/payment-status/:projectId', stripe_1.default.getPaymentStatus);
+router.get('/cancel', stripe_1.default.cancelPayment);
 exports.default = router;
 //# sourceMappingURL=stripe.js.map
