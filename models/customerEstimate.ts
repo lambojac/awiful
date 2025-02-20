@@ -11,7 +11,7 @@ const EstimateSchema: Schema = new Schema({
     business_size: { type: String, required: true },
     budget: { type: Number, required: true },
     country: { type: String, required: true },
-    request_id: { type: String, required: true, unique: true }
+    request_id: { type: String}
   },
   client: {
     first_name: { type: String, required: true },
