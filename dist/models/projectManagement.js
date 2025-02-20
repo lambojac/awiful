@@ -38,7 +38,7 @@ const ProjectManagementSchema = new mongoose_1.Schema({
     title: { type: String, required: true },
     email: { type: String, required: true },
     type: { type: String, enum: ["project", "marketing"], default: "project" },
-    client: { type: mongoose_1.Schema.Types.ObjectId, ref: "User", required: true },
+    client: { type: mongoose_1.Schema.Types.ObjectId, ref: "User", },
     service: { type: String, required: true },
     start_date: { type: Date, required: true },
     end_date: { type: Date, required: true },

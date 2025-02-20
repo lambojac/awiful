@@ -3,6 +3,7 @@ import ProjectManagement from '../models/projectManagement';
 import asyncHandler from "express-async-handler";
 import User from "../models/user"
 
+
 // Create Project
 
 export const createProject = asyncHandler(async (req: Request, res: Response) => {
@@ -190,3 +191,53 @@ export const updateProjectById = asyncHandler(async (req: Request, res: Response
     }
   };
   
+
+
+// Assign staff to a project
+export const assignStaffToProject = asyncHandler(async (req: Request, res: Response) => {
+  const { projectId, userId, userName } = req.body;
+
+  const project = await ProjectManagement.findById(projectId);
+  if (!project) {
+      res.status(404);
+      throw new Error("Project not found");
+  }
+
+  // Ensure user isn't already assigned
+  if (project.handled_by.some((user) => user.user_id.toString() === userId)) {
+      res.status(400);
+      throw new Error("User is already assigned to this project");
+  }
+
+  project.handled_by.push({ user_id: userId, user_name: userName });
+  await project.save();
+
+  res.status(200).json({ message: "Staff assigned successfully", project });
+});
+
+
+
+
+
+// Get projects by userId (as staff or customer)
+export const getProjectsByUserId = asyncHandler(async (req: Request, res: Response) => {
+  const { userId } = req.params;
+
+  const user = await User.findById(userId);
+  if (!user) {
+      res.status(404);
+      throw new Error("User not found");
+  }
+
+  let projects;
+
+  // If user is a customer, get projects where they are the client
+  projects = await ProjectManagement.find({ client: userId });
+
+  // If user is staff, also get projects where they are assigned
+  const staffProjects = await ProjectManagement.find({ "handled_by.user_id": userId });
+
+  projects = [...projects, ...staffProjects];
+
+  res.status(200).json({ projects });
+});

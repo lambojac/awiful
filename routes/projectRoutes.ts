@@ -4,7 +4,9 @@ import {
   getAllProjects, 
   getProjectById, 
   updateProjectById, 
-  deleteProjectById 
+  deleteProjectById, 
+  assignStaffToProject,
+  getProjectsByUserId
 } from '../controller/projectController';
 import Secure from '../middleware/authMiddleware';
 
@@ -271,6 +273,68 @@ router.put('/:id', Secure, updateProjectById);
  *         description: Internal server error
  */
 router.delete('/:id', Secure, deleteProjectById);
+/**
+ * @swagger
+ * /project/assign-staff:
+ *   post:
+ *     summary: Assign staff to a project
+ *     tags: [Project Management]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               projectId:
+ *                 type: string
+ *                 description: The unique identifier of the project
+ *                 example: "64f2c5a1e6b39f7c9c4d0e9b"
+ *               userId:
+ *                 type: string
+ *                 description: The unique identifier of the user
+ *                 example: "64f2c5a1e6b39f7c9c4d0e9c"
+ *               userName:
+ *                 type: string
+ *                 description: The name of the user being assigned
+ *                 example: "John Doe"
+ *     responses:
+ *       200:
+ *         description: Staff assigned successfully
+ *       400:
+ *         description: User is already assigned to this project
+ *       404:
+ *         description: Project not found
+ *       500:
+ *         description: Internal server error
+ */
+router.post('/assign-staff',Secure, assignStaffToProject);
+/**
+ * @swagger
+ * /project/projects/{userId}:
+ *   get:
+ *     summary: Get projects by user ID
+ *     tags: [Project Management]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user
+ *         example: "64f2c5a1e6b39f7c9c4d0e9c"
+ *     responses:
+ *       200:
+ *         description: List of projects related to the user
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
 
-
+router.get('/projects/:userId',Secure, getProjectsByUserId);
 export default router;

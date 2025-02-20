@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProjectById = exports.updateProjectById = exports.getProjectById = exports.getAllProjects = exports.createProject = void 0;
+exports.getProjectsByUserId = exports.assignStaffToProject = exports.deleteProjectById = exports.updateProjectById = exports.getProjectById = exports.getAllProjects = exports.createProject = void 0;
 const projectManagement_1 = __importDefault(require("../models/projectManagement"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const user_1 = __importDefault(require("../models/user"));
@@ -123,4 +123,32 @@ const deleteProjectById = async (req, res) => {
     }
 };
 exports.deleteProjectById = deleteProjectById;
+exports.assignStaffToProject = (0, express_async_handler_1.default)(async (req, res) => {
+    const { projectId, userId, userName } = req.body;
+    const project = await projectManagement_1.default.findById(projectId);
+    if (!project) {
+        res.status(404);
+        throw new Error("Project not found");
+    }
+    if (project.handled_by.some((user) => user.user_id.toString() === userId)) {
+        res.status(400);
+        throw new Error("User is already assigned to this project");
+    }
+    project.handled_by.push({ user_id: userId, user_name: userName });
+    await project.save();
+    res.status(200).json({ message: "Staff assigned successfully", project });
+});
+exports.getProjectsByUserId = (0, express_async_handler_1.default)(async (req, res) => {
+    const { userId } = req.params;
+    const user = await user_1.default.findById(userId);
+    if (!user) {
+        res.status(404);
+        throw new Error("User not found");
+    }
+    let projects;
+    projects = await projectManagement_1.default.find({ client: userId });
+    const staffProjects = await projectManagement_1.default.find({ "handled_by.user_id": userId });
+    projects = [...projects, ...staffProjects];
+    res.status(200).json({ projects });
+});
 //# sourceMappingURL=projectController.js.map
