@@ -107,5 +107,48 @@ router.get('/payment-status/:projectId', StripeController.getPaymentStatus);
  */
 
 router.get('/cancel', StripeController.cancelPayment);
+/**
+ * @swagger
+ * /stripe/send-payment-link/{projectId}/{email}:
+ *   get:
+ *     summary: Send a payment link to the user's email.
+ *     description: Generates a Stripe checkout session for a project and emails the payment link using Gmail SMTP.
+ *     tags: 
+ *       - Stripe
+ *     parameters:
+ *       - in: path
+ *         name: projectId
+ *         required: true
+ *         description: The ID of the project to be paid for.
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: email
+ *         required: true
+ *         description: The email address where the payment link will be sent.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Payment link sent successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Payment link sent successfully
+ *                 url:
+ *                   type: string
+ *                   example: https://checkout.stripe.com/pay/cs_test_a1b2c3d4e5f6
+ *       400:
+ *         description: Missing or invalid parameters.
+ *       404:
+ *         description: Project not found.
+ *       500:
+ *         description: Internal server error.
+ */
+router.get('/send-payment-link/:projectId/:email', StripeController.sendPaymentLink);
 
 export default router;

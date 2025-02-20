@@ -10,5 +10,6 @@ router.post('/checkout', stripe_1.default.createCheckoutSession);
 router.get('/complete', stripe_1.default.completePayment);
 router.get('/payment-status/:projectId', stripe_1.default.getPaymentStatus);
 router.get('/cancel', stripe_1.default.cancelPayment);
+router.get('/send-payment-link/:projectId/:email', stripe_1.default.sendPaymentLink);
 exports.default = router;
 //# sourceMappingURL=stripe.js.map

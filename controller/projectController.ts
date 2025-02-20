@@ -82,8 +82,6 @@ export const getAllProjects = asyncHandler(async (req: Request, res: Response) =
   
   
 // getprojectbyid
-// Get project by ID if type is 'project'
-// Get project by ID regardless of type
 export const getProjectById = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
 
