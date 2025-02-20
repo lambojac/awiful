@@ -12,7 +12,7 @@ router.get('/projects', projectController_1.getAllProjects);
 router.get('/:id', projectController_1.getProjectById);
 router.put('/:id', authMiddleware_1.default, projectController_1.updateProjectById);
 router.delete('/:id', authMiddleware_1.default, projectController_1.deleteProjectById);
-router.post('/assign-staff', projectController_1.assignStaffToProject);
-router.get('/projects/:userId', projectController_1.getProjectsByUserId);
+router.post('/assign-staff', authMiddleware_1.default, projectController_1.assignStaffToProject);
+router.get('/projects/:userId', authMiddleware_1.default, projectController_1.getProjectsByUserId);
 exports.default = router;
 //# sourceMappingURL=projectRoutes.js.map
