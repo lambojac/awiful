@@ -67,28 +67,49 @@ const updateArticle = async (req, res) => {
         if (!existingArticle) {
             return res.status(404).json({ message: "Article not found" });
         }
-        if (image)
+        const updatedFields = {};
+        if (image) {
             existingArticle.image = image;
-        if (title)
+            updatedFields.image = image;
+        }
+        if (title) {
             existingArticle.title = title;
-        if (descHeading)
+            updatedFields.title = title;
+        }
+        if (descHeading) {
             existingArticle.descHeading = descHeading;
-        if (desc)
+            updatedFields.descHeading = descHeading;
+        }
+        if (desc) {
             existingArticle.desc = desc;
-        if (topArticle !== undefined)
+            updatedFields.desc = desc;
+        }
+        if (topArticle !== undefined) {
             existingArticle.topArticle = topArticle;
-        if (content)
+            updatedFields.topArticle = topArticle;
+        }
+        if (content) {
             existingArticle.content = content;
-        if (category)
+            updatedFields.content = content;
+        }
+        if (category) {
             existingArticle.category = category;
-        if (status)
+            updatedFields.category = category;
+        }
+        if (status) {
             existingArticle.status = status;
-        if (keywords)
+            updatedFields.status = status;
+        }
+        if (keywords) {
             existingArticle.keywords = keywords;
-        if (tags)
+            updatedFields.keywords = keywords;
+        }
+        if (tags) {
             existingArticle.tags = tags;
-        const updatedArticle = await existingArticle.save();
-        return res.status(200).json(updatedArticle);
+            updatedFields.tags = tags;
+        }
+        await existingArticle.save();
+        return res.status(200).json(updatedFields);
     }
     catch (error) {
         return res.status(500).json({ message: "Server error", error });

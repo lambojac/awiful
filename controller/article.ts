@@ -80,45 +80,78 @@ export const createArticle = async (req: Request, res: Response) => {
  * @access  Public
  */
 export const updateArticle = async (req: Request, res: Response) => {
-    try {
+  try {
       const { title, descHeading, desc, topArticle, content, category, status, keywords, tags } = req.body;
-  
+
       // Extract file and convert to Base64 if a new file is uploaded
       const image = req.file ? req.file.buffer.toString('base64') : undefined;
-  
+
       // Find the existing article
       const existingArticle = await Article.findById(req.params.id);
       if (!existingArticle) {
-        return res.status(404).json({ message: "Article not found" });
+          return res.status(404).json({ message: "Article not found" });
       }
-  
+
+      // Track the updated fields
+      const updatedFields: Record<string, any> = {};
+
       // Update fields only if they are provided in the request
-      if (image) existingArticle.image = image;
-      if (title) existingArticle.title = title;
-      if (descHeading) existingArticle.descHeading = descHeading;
-      if (desc) existingArticle.desc = desc;
-      if (topArticle !== undefined) existingArticle.topArticle = topArticle;
-      if (content) existingArticle.content = content;
-      if (category) existingArticle.category = category;
-      if (status) existingArticle.status = status;
-      if (keywords) existingArticle.keywords = keywords;
-      if (tags) existingArticle.tags = tags;
-  
+      if (image) {
+          existingArticle.image = image;
+          updatedFields.image = image;
+      }
+      if (title) {
+          existingArticle.title = title;
+          updatedFields.title = title;
+      }
+      if (descHeading) {
+          existingArticle.descHeading = descHeading;
+          updatedFields.descHeading = descHeading;
+      }
+      if (desc) {
+          existingArticle.desc = desc;
+          updatedFields.desc = desc;
+      }
+      if (topArticle !== undefined) {
+          existingArticle.topArticle = topArticle;
+          updatedFields.topArticle = topArticle;
+      }
+      if (content) {
+          existingArticle.content = content;
+          updatedFields.content = content;
+      }
+      if (category) {
+          existingArticle.category = category;
+          updatedFields.category = category;
+      }
+      if (status) {
+          existingArticle.status = status;
+          updatedFields.status = status;
+      }
+      if (keywords) {
+          existingArticle.keywords = keywords;
+          updatedFields.keywords = keywords;
+      }
+      if (tags) {
+          existingArticle.tags = tags;
+          updatedFields.tags = tags;
+      }
+
       // Save the updated article
-      const updatedArticle = await existingArticle.save();
-  
-      return res.status(200).json(updatedArticle);
-    } catch (error) {
+      await existingArticle.save();
+
+      return res.status(200).json(updatedFields);
+  } catch (error) {
       return res.status(500).json({ message: "Server error", error });
-    }
-  };
-  
+  }
+};
 
 /**
- * @desc    Delete an article by ID
- * @route   DELETE /api/articles/:id
- * @access  Public
- */
+* @desc    Update an article by ID (partial update)
+* @route   PATCH /api/articles/:id
+* @access  Public
+*/
+
 export const deleteArticle = async (req: Request, res: Response) => {
   try {
     const deletedArticle = await Article.findByIdAndDelete(req.params.id);

@@ -102,7 +102,7 @@ router.post("/", Secure, upload.single('image'), createArticle);
 /**
  * @swagger
  * /articles/{id}:
- *   put:
+ *   patch:
  *     summary: Update an article
  *     tags: [Articles]
  *     parameters:
@@ -145,7 +145,7 @@ router.post("/", Secure, upload.single('image'), createArticle);
  *       404:
  *         description: Article not found
  */
-router.put("/:id", Secure, updateArticle);
+router.patch("/:id", Secure, updateArticle);
 
 /**
  * @swagger
