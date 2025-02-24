@@ -11,5 +11,6 @@ router.post('/login', userController_1.loginUser);
 router.get('/logout', userController_1.logOut);
 router.get("/get-all-users", userController_1.getAllUsers);
 router.get("/:id/get-users-by-id", userController_1.getUserById);
+router.put("/:id", userController_1.updateUser);
 exports.default = router;
 //# sourceMappingURL=userRoutes.js.map

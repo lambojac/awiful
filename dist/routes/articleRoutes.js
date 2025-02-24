@@ -11,7 +11,7 @@ const router = express_1.default.Router();
 router.get("/", authMiddleware_1.default, article_1.getArticles);
 router.get("/:id", authMiddleware_1.default, article_1.getArticleById);
 router.post("/", authMiddleware_1.default, multer_1.default.single('image'), article_1.createArticle);
-router.patch("/:id", article_1.updateArticle);
+router.patch("/:id", authMiddleware_1.default, article_1.updateArticle);
 router.delete("/:id", authMiddleware_1.default, article_1.deleteArticle);
 exports.default = router;
 //# sourceMappingURL=articleRoutes.js.map

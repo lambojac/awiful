@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserById = exports.getAllUsers = exports.logOut = exports.loginUser = exports.createUser = void 0;
+exports.updateUser = exports.getUserById = exports.getAllUsers = exports.logOut = exports.loginUser = exports.createUser = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
@@ -109,4 +109,22 @@ const getUserById = async (req, res) => {
     }
 };
 exports.getUserById = getUserById;
+const updateUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updatedData = req.body;
+        if (updatedData.password) {
+            updatedData.password = await bcrypt_1.default.hash(updatedData.password, 10);
+        }
+        const updatedUser = await user_1.default.findByIdAndUpdate(id, updatedData, { new: true });
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        return res.status(200).json(updatedUser);
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+};
+exports.updateUser = updateUser;
 //# sourceMappingURL=userController.js.map

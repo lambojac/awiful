@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, getAllUsers, getUserById, loginUser, logOut } from '../controller/userController';
+import { createUser, getAllUsers, getUserById, loginUser, logOut, updateUser } from '../controller/userController';
 
 const router = express.Router();
 
@@ -225,5 +225,57 @@ router.get("/get-all-users",getAllUsers)
  *         description: Internal server error
  */
 router.get("/:id/get-users-by-id",getUserById)
+/**
+ * @swagger
+ * /users/{id}:
+ *   patch:
+ *     summary: Update a user by ID
+ *     description: Update specific fields of a user. Only the fields provided in the request body will be updated.
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the user to update
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *                 description: User's first name
+ *               lastName:
+ *                 type: string
+ *                 description: User's last name
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: User's email address
+ *               phoneNumber:
+ *                 type: string
+ *                 description: User's phone number
+ *     responses:
+ *       200:
+ *         description: Successfully updated the user (only updated fields are returned)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               example:
+ *                 firstName: "John"
+ *                 email: "john.doe@example.com"
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+
+router.put("/:id",updateUser)
 
 export default router;

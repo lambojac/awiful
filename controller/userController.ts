@@ -136,26 +136,26 @@ export const getUserById = async (req: Request, res: Response) => {
     }
   };
   
-// //update user
-// export const updateUser = async (req: Request, res: Response) => {
-//   try {
-//     const { id } = req.params;
-//     const updatedData = req.body;
+//update user
+export const updateUser = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const updatedData = req.body;
 
-//     if (updatedData.password) {
-//       updatedData.password = await bcrypt.hash(updatedData.password, 10);
-//     }
+    if (updatedData.password) {
+      updatedData.password = await bcrypt.hash(updatedData.password, 10);
+    }
 
-//     const updatedUser = await User.findByIdAndUpdate(id, updatedData, { new: true });
+    const updatedUser = await User.findByIdAndUpdate(id, updatedData, { new: true });
 
-//     if (!updatedUser) {
-//       return res.status(404).json({ message: 'User not found' });
-//     }
-//     return res.status(200).json(updatedUser);
-//   } catch (error) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
 // //delete user
 // export const deleteUser = async (req: Request, res: Response) => {
 //     try {
