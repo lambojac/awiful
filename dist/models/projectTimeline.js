@@ -34,21 +34,15 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const RevenueSchema = new mongoose_1.Schema({
+const ProjectCommentSchema = new mongoose_1.Schema({
+    time: { type: String, required: true },
     title: { type: String, required: true },
-    xAxis: {
-        label: { type: String, required: true },
-        values: { type: [String], required: true }
-    },
-    yAxis: {
-        label: { type: String, required: true },
-        unit: { type: String, required: true }
-    },
-    data: [{
-            period: { type: String, required: true },
-            values: { type: [Number], required: true }
-        }],
-    categories: { type: [String], required: true }
+    created_by: { type: String, required: true },
+    description: { type: String, default: null },
+    file: { type: String, default: null },
+    project: { type: mongoose_1.Schema.Types.ObjectId, ref: "ProjectManagement", required: true }
+}, {
+    timestamps: true
 });
-exports.default = mongoose_1.default.model('Revenue', RevenueSchema);
-//# sourceMappingURL=revenue.js.map
+exports.default = mongoose_1.default.model('ProjectComment', ProjectCommentSchema);
+//# sourceMappingURL=projectTimeline.js.map

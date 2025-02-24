@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import { RevenueModel } from '../models/revenue';
+import revenue from '../models/revenue';
 
 export const getRevenueByYear = asyncHandler(async (req: Request, res: Response) => {
   const { year } = req.params;
@@ -9,7 +9,7 @@ export const getRevenueByYear = asyncHandler(async (req: Request, res: Response)
     return;
   }
 
-  const revenueData = await RevenueModel.findOne({});
+  const revenueData = await revenue.findOne({});
   if (!revenueData) {
     res.status(404).json({ message: 'Revenue data not found' });
     return;

@@ -150,5 +150,5 @@ router.get('/cancel', StripeController.cancelPayment);
  *         description: Internal server error.
  */
 router.get('/send-payment-link/:projectId/:email', StripeController.sendPaymentLink);
-
+router.get('/total-revenue', StripeController.calculateTotalRevenue);
 export default router;

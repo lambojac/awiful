@@ -21,5 +21,5 @@ const RevenueSchema: Schema = new Schema({
     categories: { type: [String], required: true }
   });
   
-  export const RevenueModel = mongoose.model<IRevenueCard>('Revenue', RevenueSchema);
+  export default  mongoose.model<IRevenueCard>('Revenue', RevenueSchema);
   

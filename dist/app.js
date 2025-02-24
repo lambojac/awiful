@@ -21,6 +21,7 @@ const projectAnalytics_1 = __importDefault(require("./routes/projectAnalytics"))
 const revenue_1 = __importDefault(require("./routes/revenue"));
 const customerEstimate_1 = __importDefault(require("./routes/customerEstimate"));
 const stripe_1 = __importDefault(require("./routes/stripe"));
+const projectTimeline_1 = __importDefault(require("./routes/projectTimeline"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use((0, helmet_1.default)());
@@ -38,6 +39,7 @@ app.use("/api/dashboard", dashboard_1.default);
 app.use("/api", projectAnalytics_1.default);
 app.use("/api/revenue", revenue_1.default);
 app.use("/api/estimate", customerEstimate_1.default);
+app.use("/api/project-timeline", projectTimeline_1.default);
 app.use('/api/stripe', stripe_1.default);
 (0, swagger_1.default)(app);
 (0, database_1.default)();

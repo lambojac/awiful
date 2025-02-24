@@ -11,5 +11,6 @@ router.get('/complete', stripe_1.default.completePayment);
 router.get('/payment-status/:projectId', stripe_1.default.getPaymentStatus);
 router.get('/cancel', stripe_1.default.cancelPayment);
 router.get('/send-payment-link/:projectId/:email', stripe_1.default.sendPaymentLink);
+router.get('/total-revenue', stripe_1.default.calculateTotalRevenue);
 exports.default = router;
 //# sourceMappingURL=stripe.js.map

@@ -90,6 +90,14 @@ export interface LatestActivity {
     period: string;
     values: number[];
   }
+  // projectcommentprop
+  export interface ProjectCommentProps {
+    time: string;
+    title: string;
+    created_by: string;
+    description?: string | null;
+    file?: string | null;
+  }
   
   export interface IRevenueCard  {
     title: string;

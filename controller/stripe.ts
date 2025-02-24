@@ -37,7 +37,7 @@ class StripeController {
             quantity: 1,
           },
         ],
-        success_url: `${process.env.BASE_URL}/api/stripe/complete?session_id={CHECKOUT_SESSION_ID}`,
+        success_url: `https://awifulabs.vercel.app/payment-successful?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${process.env.BASE_URL}/api/stripe/cancel`,
         metadata: { project_id: projectId },
       });
@@ -187,6 +187,23 @@ sendPaymentLink = asyncHandler(async (req: Request, res: Response) => {
     res.status(500).json({ error: error instanceof Error ? error.message : 'Error sending payment link' });
   }
 });
+
+
+
+
+//total rev
+// Calculate Total Revenue
+calculateTotalRevenue = asyncHandler(async (_req: Request, res: Response) => {
+  try {
+    const paidProjects = await ProjectManagement.find({ payment_status: 'paid' });
+    const totalRevenue = paidProjects.reduce((sum, project) => sum + project.price, 0);
+
+    res.json({ totalRevenue });
+  } catch (error) {
+    res.status(500).json({ error: error instanceof Error ? error.message : 'Error calculating total revenue' });
+  }
+});
+
 
 }
 

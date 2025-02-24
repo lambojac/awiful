@@ -16,6 +16,7 @@ import getProjectAnalytics from './routes/projectAnalytics';
 import revenue from "./routes/revenue"
 import estimate from "./routes/customerEstimate"
 import stripeRoutes from './routes/stripe';
+import projectTimeline from "./routes/projectTimeline"
 
 const app: Application = express();
 
@@ -37,7 +38,7 @@ app.use("/api/dashboard",dashboard)
 app.use("/api",getProjectAnalytics)
 app.use("/api/revenue",revenue)
 app.use("/api/estimate",estimate)
-// This is necessary for Stripe Webhook handling
+app.use("/api/project-timeline",projectTimeline)
 
 app.use('/api/stripe', stripeRoutes);
 // Swagger
