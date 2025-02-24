@@ -35,7 +35,6 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const LatestActivitySchema = new mongoose_1.Schema({
-    time: { type: String, required: true },
     title: { type: String, required: true },
     created_by: { type: String, required: true },
     description: { type: String, required: true },

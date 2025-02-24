@@ -3,53 +3,53 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteActivity = exports.updateActivity = exports.createActivity = exports.getLatestActivities = void 0;
-const express_async_handler_1 = __importDefault(require("express-async-handler"));
-const LatestActivity_1 = __importDefault(require("../models/LatestActivity"));
-exports.getLatestActivities = (0, express_async_handler_1.default)(async (_req, res) => {
-    const activities = await LatestActivity_1.default.find().sort({ createdAt: -1 });
-    res.status(200).json(activities);
-});
-exports.createActivity = (0, express_async_handler_1.default)(async (req, res) => {
-    const { time, title, created_by, description, category } = req.body;
-    if (!time || !title || !created_by || !description || !category) {
-        res.status(400);
-        throw new Error("All fields are required");
+exports.getLatestActivities = void 0;
+const projectManagement_1 = __importDefault(require("../models/projectManagement"));
+const article_1 = __importDefault(require("../models/article"));
+const customerEstimate_1 = __importDefault(require("../models/customerEstimate"));
+const getLatestActivities = async (_req, res) => {
+    try {
+        const projectActivities = await projectManagement_1.default.find({}, "createdAt title email description")
+            .sort({ createdAt: -1 })
+            .limit(5)
+            .lean();
+        const articleActivities = await article_1.default.find({}, "createdAt title author descHeading")
+            .sort({ createdAt: -1 })
+            .limit(5)
+            .lean();
+        const estimateActivities = await customerEstimate_1.default.find({}, "createdAt request_details.title client.first_name client.last_name description")
+            .sort({ createdAt: -1 })
+            .limit(5)
+            .lean();
+        const activities = [
+            ...projectActivities.map((item) => ({
+                title: item.title || "New Project Created",
+                created_by: item.email || "Unknown",
+                description: item.description || "",
+                category: "project",
+            })),
+            ...articleActivities.map((item) => ({
+                title: item.title || "New Article Published",
+                created_by: "Unknown",
+                description: item.descHeading || "",
+                category: "article",
+            })),
+            ...estimateActivities.map((item) => {
+                var _a, _b, _c;
+                return ({
+                    title: ((_a = item.request_details) === null || _a === void 0 ? void 0 : _a.title) || "New Estimate Request",
+                    created_by: `${(_b = item.client) === null || _b === void 0 ? void 0 : _b.first_name} ${(_c = item.client) === null || _c === void 0 ? void 0 : _c.last_name}`.trim() || "Unknown",
+                    description: item.description || "",
+                    category: "estimate",
+                });
+            }),
+        ];
+        res.status(200).json(activities);
     }
-    const newActivity = new LatestActivity_1.default({
-        time,
-        title,
-        created_by,
-        description,
-        category
-    });
-    await newActivity.save();
-    res.status(201).json(newActivity);
-});
-exports.updateActivity = (0, express_async_handler_1.default)(async (req, res) => {
-    const { id } = req.params;
-    const { time, title, created_by, description, category } = req.body;
-    const activity = await LatestActivity_1.default.findById(id);
-    if (!activity) {
-        res.status(404);
-        throw new Error("Activity not found");
+    catch (error) {
+        console.error("Error fetching latest activities:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
-    activity.time = time || activity.time;
-    activity.title = title || activity.title;
-    activity.created_by = created_by || activity.created_by;
-    activity.description = description || activity.description;
-    activity.category = category || activity.category;
-    const updatedActivity = await activity.save();
-    res.status(200).json(updatedActivity);
-});
-exports.deleteActivity = (0, express_async_handler_1.default)(async (req, res) => {
-    const { id } = req.params;
-    const activity = await LatestActivity_1.default.findById(id);
-    if (!activity) {
-        res.status(404);
-        throw new Error("Activity not found");
-    }
-    await activity.deleteOne();
-    res.status(200).json({ message: "Activity deleted successfully" });
-});
+};
+exports.getLatestActivities = getLatestActivities;
 //# sourceMappingURL=latest.js.map

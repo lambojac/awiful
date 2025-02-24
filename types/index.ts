@@ -71,7 +71,7 @@ export interface StatCardData {
 }
 
 export interface LatestActivity {
-  time: string;
+  
   title: string;
   created_by: string;
   description: string;
