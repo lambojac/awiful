@@ -9,5 +9,6 @@ const router = express_1.default.Router();
 router.post('/create', customerEstimate_1.createEstimate);
 router.get('/:id', customerEstimate_1.getEstimateById);
 router.get("/", customerEstimate_1.getAllEstimates);
+router.patch('/:id', customerEstimate_1.updateEstimate);
 exports.default = router;
 //# sourceMappingURL=customerEstimate.js.map

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createEstimate = exports.getEstimateById = exports.getAllEstimates = void 0;
+exports.updateEstimate = exports.createEstimate = exports.getEstimateById = exports.getAllEstimates = void 0;
 const customerEstimate_1 = __importDefault(require("../models/customerEstimate"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 exports.getAllEstimates = (0, express_async_handler_1.default)(async (_req, res) => {
@@ -61,6 +61,31 @@ exports.createEstimate = (0, express_async_handler_1.default)(async (req, res) =
     }
     catch (error) {
         res.status(500).json({ message: 'Error creating estimate', error });
+    }
+});
+exports.updateEstimate = (0, express_async_handler_1.default)(async (req, res) => {
+    const { id } = req.params;
+    try {
+        const updateData = req.body;
+        const updatedEstimate = await customerEstimate_1.default.findByIdAndUpdate(id, updateData, {
+            new: true,
+            runValidators: true
+        });
+        if (!updatedEstimate) {
+            res.status(404).json({ message: 'Estimate not found' });
+            return;
+        }
+        const updatedObject = updatedEstimate.toObject();
+        const updatedFields = Object.keys(updateData).reduce((acc, key) => {
+            if (key in updatedObject) {
+                acc[key] = updatedObject[key];
+            }
+            return acc;
+        }, {});
+        res.status(200).json({ message: 'Estimate updated successfully', updatedFields });
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error updating estimate', error });
     }
 });
 //# sourceMappingURL=customerEstimate.js.map

@@ -69,3 +69,39 @@ export const createEstimate = asyncHandler(async (req: Request, res: Response) =
     res.status(500).json({ message: 'Error creating estimate', error });
   }
 });
+
+// Update customer estimate by ID (Partial Update)
+export const updateEstimate = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+
+  try {
+      const updateData = req.body;
+
+      // Update only provided fields
+      const updatedEstimate = await Estimate.findByIdAndUpdate(id, updateData, {
+          new: true,              // Return the updated document
+          runValidators: true     // Ensure schema validation
+      });
+
+      if (!updatedEstimate) {
+          res.status(404).json({ message: 'Estimate not found' });
+          return;
+      }
+
+      // Convert the document into a plain object to avoid index signature issues
+      const updatedObject = updatedEstimate.toObject();
+
+      // Return only the updated fields
+      const updatedFields = Object.keys(updateData).reduce((acc, key) => {
+          if (key in updatedObject) {
+              acc[key] = updatedObject[key as keyof typeof updatedObject];
+          }
+          return acc;
+      }, {} as Record<string, any>);
+
+      res.status(200).json({ message: 'Estimate updated successfully', updatedFields });
+  } catch (error) {
+      res.status(500).json({ message: 'Error updating estimate', error });
+  }
+});
+

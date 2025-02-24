@@ -1,5 +1,5 @@
 import express from 'express';
-import { createEstimate, getAllEstimates, getEstimateById } from '../controller/customerEstimate';
+import { createEstimate, getAllEstimates, getEstimateById, updateEstimate } from '../controller/customerEstimate';
 
 const router = express.Router();
 
@@ -135,4 +135,59 @@ router.get('/:id', getEstimateById);
  *                         example: "ethan6789mnbv5432lkjh"
  */
 router.get("/",getAllEstimates)
+/**
+ * @swagger
+ * /estimate/{id}:
+ *   patch:
+ *     summary: Partially update a customer estimate
+ *     description: Update specific fields of a customer estimate using its ID. Only the updated fields will be returned.
+ *     tags:
+ *       - Estimates
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the estimate to update
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               client:
+ *                 type: object
+ *                 properties:
+ *                   email:
+ *                     type: string
+ *                     example: "newemail@example.com"
+ *               status:
+ *                 type: string
+ *                 enum: [in_progress, closed, completed, pending]
+ *                 example: "completed"
+ *     responses:
+ *       200:
+ *         description: Estimate updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Estimate updated successfully"
+ *                 updatedFields:
+ *                   type: object
+ *                   example:
+ *                     client:
+ *                       email: "newemail@example.com"
+ *                     status: "completed"
+ *       404:
+ *         description: Estimate not found
+ *       500:
+ *         description: Error updating estimate
+ */
+router.patch('/:id', updateEstimate);
 export default router;
