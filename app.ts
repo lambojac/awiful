@@ -1,4 +1,4 @@
-import express, { Application } from 'express';
+import express, { Application,Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -46,7 +46,11 @@ setupSwagger(app as any);
 
 // Database connection
 connectDB();
+//wild card checking if the requested route exist
 
+app.use('*', async (_req : Request , res : Response) => {
+  return res.status(404).json({message:" route not found"})
+})
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

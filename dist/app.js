@@ -43,6 +43,9 @@ app.use("/api/project-timeline", projectTimeline_1.default);
 app.use('/api/stripe', stripe_1.default);
 (0, swagger_1.default)(app);
 (0, database_1.default)();
+app.use('*', async (_req, res) => {
+    return res.status(404).json({ message: " route not found" });
+});
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
