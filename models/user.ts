@@ -23,7 +23,9 @@ const UserSchema = new Schema({
     default: "customer"
   },
   zoom_username: { type: String },
-  skype_username: { type: String }
+  skype_username: { type: String },
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date }
 }, {
   timestamps: true
 });

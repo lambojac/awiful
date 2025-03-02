@@ -1,5 +1,6 @@
 import express from 'express';
 import { createUser, getAllUsers, getUserById, loginUser, logOut, updateUser } from '../controller/userController';
+import { forgotPassword, resetPassword } from '../controller/forgotPassword';
 
 const router = express.Router();
 
@@ -277,5 +278,105 @@ router.get("/:id/get-users-by-id",getUserById)
  */
 
 router.put("/:id",updateUser)
+/**
+ * @swagger
+ * /users/forgot-password:
+ *   post:
+ *     summary: Request a password reset email
+ *     description: Sends an email with a password reset link to the user if the email is registered.
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: user@example.com
+ *     responses:
+ *       200:
+ *         description: Reset email sent successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Reset email sent"
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User not found"
+ *       500:
+ *         description: Server error
+ */
 
+
+router.post('/forgot-password',forgotPassword)
+/**
+ * @swagger
+ * /users/reset-password:
+ *   post:
+ *     summary: Reset password
+ *     description: Allows the user to reset their password using a valid reset token.
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - token
+ *               - password
+ *               - confirmPassword
+ *             properties:
+ *               token:
+ *                 type: string
+ *                 example: "f3b6c8e7d9..."
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: "NewStrongPassword123!"
+ *               confirmPassword:
+ *                 type: string
+ *                 format: password
+ *                 example: "NewStrongPassword123!"
+ *     responses:
+ *       200:
+ *         description: Password reset successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Password successfully reset"
+ *       400:
+ *         description: Invalid or expired token, or passwords do not match
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid or expired token"
+ *       500:
+ *         description: Server error
+ */
+router.post('/reset-password',resetPassword)
 export default router;

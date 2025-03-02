@@ -24,6 +24,8 @@ export interface StatCardData {
     role: string;
     zoom_username: string;
     skype_username: string;
+    resetPasswordToken?: string;
+    resetPasswordExpires?: Date;
   }
   
   export interface ProjectManagementDataProps {
