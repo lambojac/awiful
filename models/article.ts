@@ -11,7 +11,7 @@ const ArticleSchema = new Schema({
     topArticle: { type: Boolean, default: false },
     content: { type: String },
     category: { type: String },
-    status: { type: String },
+    status: { type: String, enum: ["draft", "published"], default: "draft" }, 
     keywords: { type: String },
     tags: { type: String }
 }, {

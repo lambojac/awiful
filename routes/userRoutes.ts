@@ -1,6 +1,7 @@
 import express from 'express';
 import { createUser, getAllUsers, getUserById, loginUser, logOut, updateUser } from '../controller/userController';
 import { forgotPassword, resetPassword } from '../controller/forgotPassword';
+import { userActivities } from '../controller/userActivities';
 
 const router = express.Router();
 
@@ -379,4 +380,61 @@ router.post('/forgot-password',forgotPassword)
  *         description: Server error
  */
 router.post('/reset-password',resetPassword)
+/**
+ * @swagger
+ * /user-activities/{userId}:
+ *   get:
+ *     summary: Fetch user activities across all collections
+ *     description: Retrieves the latest activities, articles, estimates, projects, and comments associated with a specific user.
+ *     tags:
+ *       - User Activities
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user whose activities are being fetched.
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved user activities.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 activities:
+ *                   type: object
+ *                   properties:
+ *                     latestActivities:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                     articles:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                     estimates:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                     projects:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                     comments:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *       400:
+ *         description: Invalid user ID format.
+ *       500:
+ *         description: Server error.
+ */
+
+router.get("/user-activities/:userId", userActivities)
+
 export default router;
