@@ -1,4 +1,3 @@
-
 import mongoose, { Schema, Document } from 'mongoose';
 import { IRevenueData } from '../types/index';
 export interface IRevenueCard extends Document, IRevenueData {}

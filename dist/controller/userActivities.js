@@ -12,21 +12,45 @@ const projectTimeline_1 = __importDefault(require("../models/projectTimeline"));
 const userActivities = async (req, res) => {
     try {
         const { userId } = req.params;
-        const latestActivities = LatestActivity_1.default.find({ created_by: userId });
-        const articles = article_1.default.find({ created_by: userId });
-        const estimates = customerEstimate_1.default.find({ "client.email": userId });
-        const projects = projectManagement_1.default.find({ "handled_by.user_id": userId });
-        const projectComments = projectTimeline_1.default.find({ created_by: userId });
-        const [activityResults, articleResults, estimateResults, projectResults, commentResults] = await Promise.all([latestActivities, articles, estimates, projects, projectComments]);
+        const latestActivities = await LatestActivity_1.default.find({ created_by: userId });
+        const articles = await article_1.default.find({ created_by: userId });
+        const estimates = await customerEstimate_1.default.find({ "client.email": userId });
+        const projects = await projectManagement_1.default.find({ "handled_by.user_id": userId });
+        const projectComments = await projectTimeline_1.default.find({ created_by: userId });
+        const formattedActivities = [
+            ...latestActivities.map(activity => ({
+                title: activity.title,
+                description: activity.description,
+                type: "latestActivity",
+            })),
+            ...articles.map(article => ({
+                title: article.title,
+                description: article.title,
+                timestamp: article.timestamp,
+                type: "article",
+            })),
+            ...estimates.map(estimate => ({
+                title: estimate.request_details.title,
+                description: estimate.description,
+                timestamp: estimate.timestamp,
+                type: "estimate",
+            })),
+            ...projects.map(project => ({
+                title: project.title,
+                description: project.description,
+                timestamp: project.timestamp,
+                type: "project",
+            })),
+            ...projectComments.map(comment => ({
+                title: comment.title,
+                description: comment.description,
+                timestamp: comment.timestamp,
+                type: "comment",
+            })),
+        ];
         return res.status(200).json({
             success: true,
-            activities: {
-                latestActivities: activityResults,
-                articles: articleResults,
-                estimates: estimateResults,
-                projects: projectResults,
-                comments: commentResults,
-            },
+            activities: formattedActivities,
         });
     }
     catch (error) {

@@ -56,7 +56,22 @@ const ProjectManagementSchema = new mongoose_1.Schema({
         default: "pending"
     },
     stripe_payment_intent_id: { type: String },
-    stripe_client_secret: { type: String }
+    stripe_client_secret: { type: String },
+    revenue: {
+        xAxis: {
+            label: { type: String, default: "Months" },
+            values: { type: [String], default: [] }
+        },
+        yAxis: {
+            label: { type: String, default: "Revenue" },
+            unit: { type: String, default: "USD" }
+        },
+        data: [{
+                period: { type: String, required: true },
+                values: { type: [Number], default: [] }
+            }],
+        categories: { type: [String], default: [] }
+    }
 }, {
     timestamps: true
 });

@@ -47,6 +47,8 @@ export interface StatCardData {
   payment_status:string;
   stripe_payment_intent_id:string;
   stripe_client_secret:string;
+  revenue?: IRevenueCard
+  timestamp:string
 }
 
   
@@ -70,6 +72,7 @@ export interface StatCardData {
     status?: string;
     keywords?: string;
     tags?: string;
+    timestamp?:string
 }
 
 export interface LatestActivity {
@@ -78,6 +81,7 @@ export interface LatestActivity {
   created_by: string;
   description: string;
   category: string;
+  
 }
 
 
@@ -99,6 +103,7 @@ export interface LatestActivity {
     created_by: string;
     description?: string | null;
     file?: string | null;
+    timestamp:string
   }
   
   export interface IRevenueCard  {
@@ -136,4 +141,5 @@ export interface LatestActivity {
     description: string;
     additional_services: string[];
     status: string;
+    timestamp:string
   }
