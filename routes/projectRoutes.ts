@@ -247,7 +247,7 @@ router.get('/:id',  getProjectById);
  *       500:
  *         description: Internal server error
  */
-router.put('/:id', Secure, updateProjectById);
+router.patch('/:id', Secure, updateProjectById);
 
 /**
  * @swagger

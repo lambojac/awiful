@@ -31,7 +31,24 @@ exports.getRevenueByYear = (0, express_async_handler_1.default)(async (req, res)
             },
             { $sort: { "_id.month": 1 } }
         ]);
-        console.log("Aggregation result:", revenueByYear);
+        const userPayments = await projectManagement_1.default.aggregate([
+            {
+                $match: {
+                    status: { $in: ["in_progress", "completed"] },
+                    payment_status: "paid",
+                    end_date: { $gte: startDate, $lte: endDate }
+                }
+            },
+            {
+                $group: {
+                    _id: { userId: "$userId", username: "$username", email: "$email" },
+                    numberOfProjects: { $sum: 1 },
+                    totalAmountGenerated: { $sum: "$price" }
+                }
+            },
+            { $sort: { totalAmountGenerated: -1 } }
+        ]);
+        console.log("User Payments:", userPayments);
         const monthlyRevenue = Array(12).fill(0);
         revenueByYear.forEach(entry => {
             monthlyRevenue[entry._id.month - 1] = entry.totalRevenue;
@@ -50,8 +67,8 @@ exports.getRevenueByYear = (0, express_async_handler_1.default)(async (req, res)
                     values: monthlyRevenue
                 }],
         };
-        const totalRevenue = revenueByYear.length > 0 ? revenueByYear[0].totalRevenue : 0;
-        res.json({ totalRevenue, year, revenue: formattedData });
+        const totalRevenue = revenueByYear.reduce((sum, entry) => sum + entry.totalRevenue, 0);
+        res.json({ totalRevenue, year, revenue: formattedData, users: userPayments });
     }
     catch (error) {
         console.error("Error fetching revenue:", error);

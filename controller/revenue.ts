@@ -7,7 +7,7 @@ export const getRevenueByYear = asyncHandler(async (req: Request, res: Response)
 
   if (!year || isNaN(Number(year))) {
     res.status(400).json({ message: 'Invalid year parameter' });
-    return; // ✅ Ensure function ends here
+    return;
   }
 
   const startDate = new Date(`${year}-01-01T00:00:00.000Z`);
@@ -31,7 +31,25 @@ export const getRevenueByYear = asyncHandler(async (req: Request, res: Response)
       { $sort: { "_id.month": 1 } }
     ]);
 
-    console.log("Aggregation result:", revenueByYear);
+    const userPayments = await ProjectManagement.aggregate([
+      {
+        $match: {
+          status: { $in: ["in_progress", "completed"] },
+          payment_status: "paid",
+          end_date: { $gte: startDate, $lte: endDate }
+        }
+      },
+      {
+        $group: {
+          _id: { userId: "$userId", username: "$username", email: "$email" },
+          numberOfProjects: { $sum: 1 },
+          totalAmountGenerated: { $sum: "$price" }
+        }
+      },
+      { $sort: { totalAmountGenerated: -1 } }
+    ]);
+
+    console.log("User Payments:", userPayments);
 
     // Ensure all 12 months are covered
     const monthlyRevenue = Array(12).fill(0);
@@ -52,10 +70,11 @@ export const getRevenueByYear = asyncHandler(async (req: Request, res: Response)
         period: `${year}`,
         values: monthlyRevenue
       }],
-      
     };
-    const totalRevenue = revenueByYear.length > 0 ? revenueByYear[0].totalRevenue : 0;
-    res.json({ totalRevenue,year, revenue: formattedData }); // ✅ No explicit return
+
+    const totalRevenue = revenueByYear.reduce((sum, entry) => sum + entry.totalRevenue, 0);
+
+    res.json({ totalRevenue, year, revenue: formattedData, users: userPayments });
   } catch (error) {
     console.error("Error fetching revenue:", error);
     res.status(500).json({ message: 'Server error', error });
