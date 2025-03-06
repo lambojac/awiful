@@ -131,6 +131,7 @@ export interface LatestActivity {
       budget: number;
       country: string;
       request_id: string;
+      price:Number;
     };
     client: {
       first_name: string;

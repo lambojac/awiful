@@ -58,6 +58,12 @@ const EstimateSchema = new mongoose_1.Schema({
         enum: ["in_progress", "closed", "completed", "pending"],
         default: "in_progress"
     },
+    price: {
+        type: Number
+    },
+    country: {
+        type: String
+    }
 }, {
     timestamps: true
 });

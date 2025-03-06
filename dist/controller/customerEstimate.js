@@ -3,9 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateEstimate = exports.createEstimate = exports.getEstimateById = exports.getAllEstimates = void 0;
+exports.convertEstimateToProject = exports.updateEstimate = exports.createEstimate = exports.getEstimateById = exports.getAllEstimates = void 0;
 const customerEstimate_1 = __importDefault(require("../models/customerEstimate"));
+const projectManagement_1 = __importDefault(require("../models/projectManagement"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
+const user_1 = __importDefault(require("../models/user"));
 exports.getAllEstimates = (0, express_async_handler_1.default)(async (_req, res) => {
     const estimates = await customerEstimate_1.default.find().select('client.email createdAt request_details.service status');
     const totalRequests = estimates.length;
@@ -88,4 +90,38 @@ exports.updateEstimate = (0, express_async_handler_1.default)(async (req, res) =
         res.status(500).json({ message: 'Error updating estimate', error });
     }
 });
+const convertEstimateToProject = async (req, res) => {
+    var _a, _b, _c, _d, _e, _f, _g, _h;
+    const { id } = req.params;
+    const estimate = await customerEstimate_1.default.findById(id);
+    if (!estimate) {
+        return res.status(404).json({ message: "Estimate not found" });
+    }
+    const client = await user_1.default.findOne({ email: estimate.client.email });
+    if (!client) {
+        return res.status(400).json({ message: "Client not found" });
+    }
+    const projectData = {
+        title: ((_a = estimate.request_details) === null || _a === void 0 ? void 0 : _a.title) || "Untitled Project",
+        client: client._id,
+        service: (_b = estimate.request_details) === null || _b === void 0 ? void 0 : _b.service,
+        description: estimate.description || "No description provided",
+        start_date: new Date(),
+        end_date: ((_c = estimate.request_details) === null || _c === void 0 ? void 0 : _c.proposed_end_date) || new Date(),
+        status: "in_progress",
+        additional_services: estimate.additional_services || [],
+        price: (_e = (_d = estimate.request_details) === null || _d === void 0 ? void 0 : _d.price) !== null && _e !== void 0 ? _e : 0,
+        country: (_g = (_f = estimate.request_details) === null || _f === void 0 ? void 0 : _f.country) !== null && _g !== void 0 ? _g : "Not specified",
+        business_size: (_h = estimate.request_details) === null || _h === void 0 ? void 0 : _h.business_size,
+    };
+    const newProject = new projectManagement_1.default(projectData);
+    const savedProject = await newProject.save();
+    await customerEstimate_1.default.findByIdAndDelete(id);
+    res.status(201).json({
+        message: "Estimate successfully converted to project",
+        project_details: savedProject
+    });
+    return res.status(201).json(savedProject);
+};
+exports.convertEstimateToProject = convertEstimateToProject;
 //# sourceMappingURL=customerEstimate.js.map

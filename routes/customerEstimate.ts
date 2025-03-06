@@ -1,5 +1,5 @@
 import express from 'express';
-import { createEstimate, getAllEstimates, getEstimateById, updateEstimate } from '../controller/customerEstimate';
+import { convertEstimateToProject, createEstimate, getAllEstimates, getEstimateById, updateEstimate } from '../controller/customerEstimate';
 
 const router = express.Router();
 
@@ -190,4 +190,84 @@ router.get("/",getAllEstimates)
  *         description: Error updating estimate
  */
 router.patch('/:id', updateEstimate);
+/**
+ * @swagger
+ * /estimate/estimates/{id}/convert:
+ *   patch:
+ *     summary: Convert an estimate into a project
+ *     description: Converts an existing estimate into a project and deletes the original estimate.
+ *     tags:
+ *       - Estimates
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the estimate to convert.
+ *     responses:
+ *       200:
+ *         description: Successfully converted estimate into a project.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Estimate successfully converted to project"
+ *                 project_details:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "60b6aeb9f9d8b30d8888e4b5"
+ *                     title:
+ *                       type: string
+ *                       example: "Website Development Project"
+ *                     client:
+ *                       type: string
+ *                       example: "60b6aeb9f9d8b30d8888e4c7"
+ *                     service:
+ *                       type: string
+ *                       example: "Web Development"
+ *                     description:
+ *                       type: string
+ *                       example: "A website development project"
+ *                     start_date:
+ *                       type: string
+ *                       format: date-time
+ *                       example: "2024-07-30T10:00:00.000Z"
+ *                     end_date:
+ *                       type: string
+ *                       format: date-time
+ *                       example: "2024-12-30T10:00:00.000Z"
+ *                     status:
+ *                       type: string
+ *                       example: "in_progress"
+ *       404:
+ *         description: Estimate not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Estimate not found"
+ *       400:
+ *         description: Client not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Client not found"
+ *       500:
+ *         description: Server error.
+ */
+
+router.patch('/estimates/:id/convert', convertEstimateToProject);
 export default router;

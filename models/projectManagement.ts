@@ -4,8 +4,8 @@ import { ProjectManagementDataProps } from '../types/index';
 export interface ProjectManagementDocument extends ProjectManagementDataProps {}
 
 const ProjectManagementSchema = new Schema({
-  title: { type: String, required: true },
-  email: { type: String, required: true },
+  title: { type: String,  },
+  email: { type: String, },
   type: { type: String, enum:["project", "marketing"],default:"project"},
   client: { type: Schema.Types.ObjectId, ref: "User", },
   service: { type: String, required: true },

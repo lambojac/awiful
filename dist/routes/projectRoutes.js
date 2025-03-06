@@ -10,7 +10,7 @@ const router = express_1.default.Router();
 router.post('/', authMiddleware_1.default, projectController_1.createProject);
 router.get('/projects', projectController_1.getAllProjects);
 router.get('/:id', projectController_1.getProjectById);
-router.put('/:id', authMiddleware_1.default, projectController_1.updateProjectById);
+router.patch('/:id', authMiddleware_1.default, projectController_1.updateProjectById);
 router.delete('/:id', authMiddleware_1.default, projectController_1.deleteProjectById);
 router.post('/assign-staff', authMiddleware_1.default, projectController_1.assignStaffToProject);
 router.get('/projects/:userId', authMiddleware_1.default, projectController_1.getProjectsByUserId);
