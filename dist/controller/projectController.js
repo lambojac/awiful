@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProjectsByUserId = exports.assignStaffToProject = exports.deleteProjectById = exports.updateProjectById = exports.getProjectById = exports.getAllProjects = exports.createProject = void 0;
+exports.unassignStaffFromProject = exports.getProjectsByUserId = exports.assignStaffToProject = exports.deleteProjectById = exports.updateProjectById = exports.getProjectById = exports.getAllProjects = exports.createProject = void 0;
 const projectManagement_1 = __importDefault(require("../models/projectManagement"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const user_1 = __importDefault(require("../models/user"));
@@ -151,5 +151,24 @@ exports.getProjectsByUserId = (0, express_async_handler_1.default)(async (req, r
     const staffProjects = await projectManagement_1.default.find({ "handled_by.user_id": userId });
     projects = [...projects, ...staffProjects];
     res.status(200).json({ projects });
+});
+exports.unassignStaffFromProject = (0, express_async_handler_1.default)(async (req, res) => {
+    const { projectId, userId } = req.body;
+    const project = await projectManagement_1.default.findById(projectId);
+    if (!project) {
+        res.status(404);
+        throw new Error("Project not found");
+    }
+    const staffIndex = project.handled_by.findIndex((handler) => handler.user_id === userId);
+    if (staffIndex === -1) {
+        res.status(400);
+        throw new Error("User is not assigned to this project");
+    }
+    project.handled_by.splice(staffIndex, 1);
+    await project.save();
+    res.status(200).json({
+        message: "Staff unassigned successfully",
+        project
+    });
 });
 //# sourceMappingURL=projectController.js.map

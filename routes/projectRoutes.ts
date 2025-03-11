@@ -6,7 +6,8 @@ import {
   updateProjectById, 
   deleteProjectById, 
   assignStaffToProject,
-  getProjectsByUserId
+  getProjectsByUserId,
+  unassignStaffFromProject
 } from '../controller/projectController';
 import Secure from '../middleware/authMiddleware';
 
@@ -337,4 +338,48 @@ router.post('/assign-staff',Secure, assignStaffToProject);
  */
 
 router.get('/projects/:userId',Secure, getProjectsByUserId);
+/**
+ * @swagger
+ * /project/projects/unassign:
+ *   post:
+ *     summary: Unassign a staff member from a project
+ *     tags: [Projects]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - projectId
+ *               - userId
+ *             properties:
+ *               projectId:
+ *                 type: string
+ *                 description: The ID of the project
+ *               userId:
+ *                 type: string
+ *                 description: The ID of the user to unassign
+ *     responses:
+ *       200:
+ *         description: Staff member successfully unassigned
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Staff unassigned successfully
+ *                 project:
+ *                   type: object
+ *                   description: The updated project details
+ *       400:
+ *         description: Bad request - User not assigned to this project
+ *       404:
+ *         description: Project not found
+ *       500:
+ *         description: Server error
+ */
+router.post("/projects/unassign",Secure,unassignStaffFromProject)
 export default router;

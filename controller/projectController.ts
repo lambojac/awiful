@@ -242,3 +242,33 @@ export const getProjectsByUserId = asyncHandler(async (req: Request, res: Respon
 
   res.status(200).json({ projects });
 });
+
+//unasign staff
+export const unassignStaffFromProject = asyncHandler(async (req: Request, res: Response) => {
+  const { projectId, userId } = req.body;
+
+  const project = await ProjectManagement.findById(projectId);
+  if (!project) {
+    res.status(404);
+    throw new Error("Project not found");
+  }
+
+  // Check if user is assigned to the project
+  const staffIndex = project.handled_by.findIndex(
+    (handler) => handler.user_id=== userId
+  );
+
+  if (staffIndex === -1) {
+    res.status(400);
+    throw new Error("User is not assigned to this project");
+  }
+
+  // Remove the user from handled_by array
+  project.handled_by.splice(staffIndex, 1);
+  await project.save();
+
+  res.status(200).json({ 
+    message: "Staff unassigned successfully", 
+    project 
+  });
+});
