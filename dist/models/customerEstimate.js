@@ -37,7 +37,7 @@ const mongoose_1 = __importStar(require("mongoose"));
 const EstimateSchema = new mongoose_1.Schema({
     request_details: {
         title: { type: String, required: true },
-        service: { type: String, required: true },
+        service: { type: [String], required: true },
         proposed_start_date: { type: String, required: true },
         proposed_end_date: { type: String, required: true },
         business_size: { type: String, required: true },

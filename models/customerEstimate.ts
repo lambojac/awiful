@@ -5,7 +5,7 @@ import {IEstimate} from "../types/index";
 const EstimateSchema: Schema = new Schema({
   request_details: {
     title: { type: String, required: true },
-    service: { type: String, required: true },
+    service:{ type: [String], required: true },
     proposed_start_date: { type: String, required: true },
     proposed_end_date: { type: String, required: true },
     business_size: { type: String, required: true },

@@ -64,13 +64,30 @@ export const getEstimateById = asyncHandler(async (req: Request, res: Response) 
 // Create Estimate
 export const createEstimate = asyncHandler(async (req: Request, res: Response) => {
   try {
-    const newEstimate = new Estimate(req.body);
+    let { request_details, client, description, additional_services, price, country } = req.body;
+
+    // Ensure `service` in `request_details` is an array
+    request_details.service = Array.isArray(request_details.service) ? request_details.service : [request_details.service];
+
+    // Ensure `additional_services` is an array
+    additional_services = Array.isArray(additional_services) ? additional_services : [additional_services];
+
+    const newEstimate = new Estimate({
+      request_details,
+      client,
+      description,
+      additional_services,
+      price,
+      country
+    });
+
     const savedEstimate = await newEstimate.save();
-     res.status(201).json({ message: 'Estimate created successfully', estimate: savedEstimate });
+    res.status(201).json({ message: 'Estimate created successfully', estimate: savedEstimate });
   } catch (error) {
     res.status(500).json({ message: 'Error creating estimate', error });
   }
 });
+
 
 // Update customer estimate by ID (Partial Update)
 export const updateEstimate = asyncHandler(async (req: Request, res: Response): Promise<void> => {

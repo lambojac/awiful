@@ -57,7 +57,17 @@ exports.getEstimateById = (0, express_async_handler_1.default)(async (req, res) 
 });
 exports.createEstimate = (0, express_async_handler_1.default)(async (req, res) => {
     try {
-        const newEstimate = new customerEstimate_1.default(req.body);
+        let { request_details, client, description, additional_services, price, country } = req.body;
+        request_details.service = Array.isArray(request_details.service) ? request_details.service : [request_details.service];
+        additional_services = Array.isArray(additional_services) ? additional_services : [additional_services];
+        const newEstimate = new customerEstimate_1.default({
+            request_details,
+            client,
+            description,
+            additional_services,
+            price,
+            country
+        });
         const savedEstimate = await newEstimate.save();
         res.status(201).json({ message: 'Estimate created successfully', estimate: savedEstimate });
     }
