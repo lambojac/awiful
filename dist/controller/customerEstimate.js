@@ -117,11 +117,10 @@ const convertEstimateToProject = async (req, res) => {
     const newProject = new projectManagement_1.default(projectData);
     const savedProject = await newProject.save();
     await customerEstimate_1.default.findByIdAndDelete(id);
-    res.status(201).json({
+    return res.status(201).json({
         message: "Estimate successfully converted to project",
         project_details: savedProject
     });
-    return res.status(201).json(savedProject);
 };
 exports.convertEstimateToProject = convertEstimateToProject;
 //# sourceMappingURL=customerEstimate.js.map

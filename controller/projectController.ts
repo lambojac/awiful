@@ -7,46 +7,49 @@ import User from "../models/user"
 // Create Project
 
 export const createProject = asyncHandler(async (req: Request, res: Response) => {
-    const { title, email, username, firstName, lastName, phone_number, service, start_date, end_date, business_size, price, country, description } = req.body;
+const { title, email, username, firstName, lastName, phone_number, service, start_date, end_date, business_size, price, country, description } = req.body;
   
-    // Check if user exists
-    let user = await User.findOne({ email });
+  // Convert service to an array if it's a string
+const serviceArray = Array.isArray(service) ? service : [service];
   
-    // If user doesn't exist, create new user
-    if (!user) {
-      user = new User({ firstName, lastName, email, phone_number, username });
-      await user.save();
-    }
+  // Check if user exists
+   let user = await User.findOne({ email });
   
-    // Create project with default type "project"
-    const project = new ProjectManagement({
-      title,
-      email,
-      client: user._id,
-      service,
-      start_date,
-      end_date,
-      business_size,
-      type: "project", // Default type
-      price,
-      country,
-      description,
-      status: "in_progress",
-      status_percentage: 10,
-      handled_by: []
-    });
+   // If user doesn't exist, create new user
+ if (!user) {
+   user = new User({ firstName, lastName, email, phone_number, username });
+   await user.save();
+  }
   
-    await project.save();
-    const projectObject = project.toObject();
-
-    res.status(201).json({
-      message: 'Project created successfully',
-      project: {
-        ...projectObject,
-        project_id: project._id  // Use MongoDB's _id as project_id
-      }
-    });
-});
+ // Create project with default type "project"
+const project = new ProjectManagement({
+   title,
+   email,
+   client: user._id,
+  service: serviceArray, // Ensure service is stored as an array
+   start_date,
+ end_date,
+business_size,
+type: "project", // Default type
+ price,
+ country,
+description,
+ status: "in_progress",
+ status_percentage: 10,
+ handled_by: []
+  });
+  
+  await project.save();
+  const projectObject = project.toObject();
+   res.status(201).json({
+   message: 'Project created successfully',
+   project: {
+  ...projectObject,
+   project_id: project._id// Use MongoDB's *id as project_id*
+   }
+   });
+  });
+  
 
   
 // getallproject and marketing

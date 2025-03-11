@@ -9,6 +9,7 @@ const express_async_handler_1 = __importDefault(require("express-async-handler")
 const user_1 = __importDefault(require("../models/user"));
 exports.createProject = (0, express_async_handler_1.default)(async (req, res) => {
     const { title, email, username, firstName, lastName, phone_number, service, start_date, end_date, business_size, price, country, description } = req.body;
+    const serviceArray = Array.isArray(service) ? service : [service];
     let user = await user_1.default.findOne({ email });
     if (!user) {
         user = new user_1.default({ firstName, lastName, email, phone_number, username });
@@ -18,7 +19,7 @@ exports.createProject = (0, express_async_handler_1.default)(async (req, res) =>
         title,
         email,
         client: user._id,
-        service,
+        service: serviceArray,
         start_date,
         end_date,
         business_size,
