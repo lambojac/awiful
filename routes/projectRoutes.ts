@@ -340,26 +340,23 @@ router.post('/assign-staff', assignStaffToProject);
 router.get('/projects/:userId',Secure, getProjectsByUserId);
 /**
  * @swagger
- * /project/{projectId}/staff/{userId}
- *   Delete:
+ * /project/{projectId}/staff/{userId}:
+ *   delete:
  *     summary: Unassign a staff member from a project
  *     tags: [Projects]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - projectId
- *               - userId
- *             properties:
- *               projectId:
- *                 type: string
- *                 description: The ID of the project
- *               userId:
- *                 type: string
- *                 description: The ID of the user to unassign
+ *     parameters:
+ *       - in: path
+ *         name: projectId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the project
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user to unassign
  *     responses:
  *       200:
  *         description: Staff member successfully unassigned
@@ -381,6 +378,7 @@ router.get('/projects/:userId',Secure, getProjectsByUserId);
  *       500:
  *         description: Server error
  */
+
 router.delete('/:projectId/staff/:userId', unassignStaffFromProject);
 
 export default router;
