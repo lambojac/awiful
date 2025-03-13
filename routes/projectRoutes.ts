@@ -340,8 +340,8 @@ router.post('/assign-staff', assignStaffToProject);
 router.get('/projects/:userId',Secure, getProjectsByUserId);
 /**
  * @swagger
- * /project/projects/unassign:
- *   post:
+ * /project/{projectId}/staff/{userId}
+ *   delete:
  *     summary: Unassign a staff member from a project
  *     tags: [Projects]
  *     requestBody:
@@ -381,5 +381,6 @@ router.get('/projects/:userId',Secure, getProjectsByUserId);
  *       500:
  *         description: Server error
  */
-router.post("/projects/unassign",unassignStaffFromProject)
+router.delete('/:projectId/staff/:userId', unassignStaffFromProject);
+
 export default router;

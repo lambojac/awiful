@@ -242,7 +242,14 @@ export const getProjectsByUserId = asyncHandler(async (req: Request, res: Respon
 
 //unasign staff
 export const unassignStaffFromProject = asyncHandler(async (req: Request, res: Response) => {
-  const { projectId, userId } = req.body;
+  const projectId = req.params.projectId;
+  const userId = req.params.userId;
+  
+  // Validate parameters
+  if (!projectId || !userId) {
+    res.status(400);
+    throw new Error("Project ID and User ID are required");
+  }
 
   const project = await ProjectManagement.findById(projectId);
   if (!project) {
@@ -251,21 +258,27 @@ export const unassignStaffFromProject = asyncHandler(async (req: Request, res: R
   }
 
   // Check if user is assigned to the project
+  // Convert ObjectIds to strings for comparison if needed
   const staffIndex = project.handled_by.findIndex(
-    (handler) => handler.user_id=== userId
+    (handler) => handler.user_id.toString() === userId.toString()
   );
-
+  
   if (staffIndex === -1) {
-    res.status(400);
+    res.status(404);
     throw new Error("User is not assigned to this project");
   }
 
   // Remove the user from handled_by array
   project.handled_by.splice(staffIndex, 1);
+  
+  // Save the updated project
   await project.save();
-
-  res.status(200).json({ 
-    message: "Staff unassigned successfully", 
-    project 
+  
+  res.status(200).json({
+    success: true,
+    message: "Staff unassigned successfully",
+    project
   });
 });
+
+

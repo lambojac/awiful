@@ -153,20 +153,26 @@ exports.getProjectsByUserId = (0, express_async_handler_1.default)(async (req, r
     res.status(200).json({ projects });
 });
 exports.unassignStaffFromProject = (0, express_async_handler_1.default)(async (req, res) => {
-    const { projectId, userId } = req.body;
+    const projectId = req.params.projectId;
+    const userId = req.params.userId;
+    if (!projectId || !userId) {
+        res.status(400);
+        throw new Error("Project ID and User ID are required");
+    }
     const project = await projectManagement_1.default.findById(projectId);
     if (!project) {
         res.status(404);
         throw new Error("Project not found");
     }
-    const staffIndex = project.handled_by.findIndex((handler) => handler.user_id === userId);
+    const staffIndex = project.handled_by.findIndex((handler) => handler.user_id.toString() === userId.toString());
     if (staffIndex === -1) {
-        res.status(400);
+        res.status(404);
         throw new Error("User is not assigned to this project");
     }
     project.handled_by.splice(staffIndex, 1);
     await project.save();
     res.status(200).json({
+        success: true,
         message: "Staff unassigned successfully",
         project
     });
