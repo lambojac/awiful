@@ -12,8 +12,8 @@ router.get('/projects', projectController_1.getAllProjects);
 router.get('/:id', projectController_1.getProjectById);
 router.patch('/:id', authMiddleware_1.default, projectController_1.updateProjectById);
 router.delete('/:id', authMiddleware_1.default, projectController_1.deleteProjectById);
-router.post('/assign-staff', authMiddleware_1.default, projectController_1.assignStaffToProject);
+router.post('/assign-staff', projectController_1.assignStaffToProject);
 router.get('/projects/:userId', authMiddleware_1.default, projectController_1.getProjectsByUserId);
-router.post("/projects/unassign", authMiddleware_1.default, projectController_1.unassignStaffFromProject);
+router.post("/projects/unassign", projectController_1.unassignStaffFromProject);
 exports.default = router;
 //# sourceMappingURL=projectRoutes.js.map

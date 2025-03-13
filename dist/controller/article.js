@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteArticle = exports.updateArticle = exports.createArticle = exports.getArticleById = exports.getArticles = void 0;
+exports.deleteArticle = exports.updateArticle = exports.createArticle = exports.getArticleById = exports.getPublishedArticles = exports.getArticles = void 0;
 const article_1 = __importDefault(require("../models/article"));
 const cloudinary_1 = __importDefault(require("../config/cloudinary"));
 const getArticles = async (_req, res) => {
@@ -16,6 +16,16 @@ const getArticles = async (_req, res) => {
     }
 };
 exports.getArticles = getArticles;
+const getPublishedArticles = async (_req, res) => {
+    try {
+        const articles = await article_1.default.find({ status: "published" });
+        res.status(200).json(articles);
+    }
+    catch (error) {
+        res.status(500).json({ message: "Server error", error });
+    }
+};
+exports.getPublishedArticles = getPublishedArticles;
 const getArticleById = async (req, res) => {
     try {
         const article = await article_1.default.findById(req.params.id);

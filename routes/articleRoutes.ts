@@ -5,11 +5,70 @@ import {
   createArticle,
   updateArticle,
   deleteArticle,
+  getPublishedArticles,
 } from "../controller/article";
 import upload from "../middleware/multer"
 import Secure from '../middleware/authMiddleware'
 const router = express.Router();
+/**
+ * @swagger
+ * /articles/published-article:
+ *   get:
+ *     summary: Get all published articles
+ *     description: Retrieve a list of all articles that have been published.
+ *     tags:
+ *       - Articles
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved published articles
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: The article ID
+ *                   title:
+ *                     type: string
+ *                     description: The title of the article
+ *                   descHeading:
+ *                     type: string
+ *                     description: The heading of the article
+ *                   desc:
+ *                     type: string
+ *                     description: The description of the article
+ *                   content:
+ *                     type: string
+ *                     description: The main content of the article
+ *                   category:
+ *                     type: string
+ *                     description: The category of the article
+ *                   status:
+ *                     type: string
+ *                     enum: [draft, published]
+ *                     description: The status of the article
+ *                   keywords:
+ *                     type: string
+ *                     description: SEO keywords
+ *                   tags:
+ *                     type: string
+ *                     description: Tags associated with the article
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The creation date of the article
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The last update date of the article
+ *       500:
+ *         description: Server error
+ */
 
+router.get("/published-article",getPublishedArticles)
 /**
  * @swagger
  * tags:

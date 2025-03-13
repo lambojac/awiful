@@ -311,7 +311,7 @@ router.delete('/:id', Secure, deleteProjectById);
  *       500:
  *         description: Internal server error
  */
-router.post('/assign-staff',Secure, assignStaffToProject);
+router.post('/assign-staff', assignStaffToProject);
 /**
  * @swagger
  * /project/projects/{userId}:
@@ -381,5 +381,5 @@ router.get('/projects/:userId',Secure, getProjectsByUserId);
  *       500:
  *         description: Server error
  */
-router.post("/projects/unassign",Secure,unassignStaffFromProject)
+router.post("/projects/unassign",unassignStaffFromProject)
 export default router;

@@ -15,6 +15,15 @@ export const getArticles = async (_req: Request, res: Response) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
+// get published articles
+export const getPublishedArticles = async (_req: Request, res: Response) => {
+  try {
+    const articles = await Article.find({ status: "published" }); // Filter by published status
+    res.status(200).json(articles);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
 
 /**
  * @desc    Get a single article by ID

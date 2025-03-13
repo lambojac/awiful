@@ -8,6 +8,7 @@ const article_1 = require("../controller/article");
 const multer_1 = __importDefault(require("../middleware/multer"));
 const authMiddleware_1 = __importDefault(require("../middleware/authMiddleware"));
 const router = express_1.default.Router();
+router.get("/published-article", article_1.getPublishedArticles);
 router.get("/", authMiddleware_1.default, article_1.getArticles);
 router.get("/:id", authMiddleware_1.default, article_1.getArticleById);
 router.post("/", authMiddleware_1.default, multer_1.default.single('image'), article_1.createArticle);
