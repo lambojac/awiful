@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.convertEstimateToProject = exports.updateEstimate = exports.createEstimate = exports.getEstimateById = exports.getAllEstimates = void 0;
+exports.deleteEstimate = exports.convertEstimateToProject = exports.updateEstimate = exports.createEstimate = exports.getEstimateById = exports.getAllEstimates = void 0;
 const customerEstimate_1 = __importDefault(require("../models/customerEstimate"));
 const projectManagement_1 = __importDefault(require("../models/projectManagement"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
@@ -133,4 +133,18 @@ const convertEstimateToProject = async (req, res) => {
     });
 };
 exports.convertEstimateToProject = convertEstimateToProject;
+exports.deleteEstimate = (0, express_async_handler_1.default)(async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deletedEstimate = await customerEstimate_1.default.findByIdAndDelete(id);
+        if (!deletedEstimate) {
+            res.status(404).json({ message: 'Estimate not found' });
+            return;
+        }
+        res.status(200).json({ message: 'Estimate deleted successfully' });
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error deleting estimate', error });
+    }
+});
 //# sourceMappingURL=customerEstimate.js.map

@@ -80,9 +80,6 @@ export const getAllProjects = asyncHandler(async (req: Request, res: Response) =
 });
 
 
-
-
-  
   
 // getprojectbyid
 export const getProjectById = asyncHandler(async (req: Request, res: Response) => {

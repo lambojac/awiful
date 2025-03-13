@@ -1,5 +1,5 @@
 import express from 'express';
-import { convertEstimateToProject, createEstimate, getAllEstimates, getEstimateById, updateEstimate } from '../controller/customerEstimate';
+import { convertEstimateToProject, createEstimate, deleteEstimate, getAllEstimates, getEstimateById, updateEstimate } from '../controller/customerEstimate';
 
 const router = express.Router();
 
@@ -270,4 +270,55 @@ router.patch('/:id', updateEstimate);
  */
 
 router.patch('/estimates/:id/convert', convertEstimateToProject);
+/**
+ * @swagger
+ * /estimate/estimates/{id}:
+ *   delete:
+ *     summary: Delete an estimate by ID
+ *     description: Deletes an estimate from the database using its ID.
+ *     tags:
+ *       - Estimates
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the estimate to delete.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Estimate deleted successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Estimate deleted successfully
+ *       404:
+ *         description: Estimate not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Estimate not found
+ *       500:
+ *         description: Error deleting estimate.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Error deleting estimate
+ *                 error:
+ *                   type: object
+ */
+
+router.delete("/estimates/:id",deleteEstimate)
 export default router;

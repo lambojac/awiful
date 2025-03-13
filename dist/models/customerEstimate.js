@@ -53,7 +53,7 @@ const EstimateSchema = new mongoose_1.Schema({
     },
     description: { type: String, required: true },
     additional_services: { type: [String], required: true },
-    role: {
+    status: {
         type: String,
         enum: ["in_progress", "closed", "completed", "pending"],
         default: "in_progress"

@@ -166,3 +166,22 @@ export const convertEstimateToProject = async (req: Request, res: Response) => {
          project_details: savedProject
      });
 }
+
+// delete estimate
+export const deleteEstimate = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const deletedEstimate = await Estimate.findByIdAndDelete(id);
+
+    if (!deletedEstimate) {
+      res.status(404).json({ message: 'Estimate not found' });
+      return;
+    }
+
+    res.status(200).json({ message: 'Estimate deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting estimate', error });
+  }
+});
+
