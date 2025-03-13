@@ -18,5 +18,7 @@ router.patch('/:id', multer_1.default.single('profilePicture'), userController_1
 router.post('/forgot-password', forgotPassword_1.forgotPassword);
 router.post('/reset-password', forgotPassword_1.resetPassword);
 router.get("/user-activities/:userId", userActivities_1.userActivities);
+router.delete("/:id", userController_1.deleteUser);
+router.get("/:id/restore", userController_1.restoreUser);
 exports.default = router;
 //# sourceMappingURL=userRoutes.js.map

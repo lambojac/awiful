@@ -57,7 +57,9 @@ const UserSchema = new mongoose_1.Schema({
     skype_username: { type: String },
     resetPasswordToken: { type: String },
     resetPasswordExpires: { type: Date },
-    profilePicture: { type: String }
+    profilePicture: { type: String, default: null },
+    isDeleted: { type: Boolean, default: false },
+    deletedAt: { type: Date, default: null }
 }, {
     timestamps: true
 });

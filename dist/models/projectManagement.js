@@ -36,6 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const ProjectManagementSchema = new mongoose_1.Schema({
     title: { type: String, },
+    userId: { type: mongoose_1.Schema.Types.ObjectId, ref: "User", },
     email: { type: String, },
     type: { type: String, enum: ["project", "marketing"], default: "project" },
     client: { type: mongoose_1.Schema.Types.ObjectId, ref: "User", },

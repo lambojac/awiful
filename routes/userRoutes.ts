@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, getAllUsers, getUserById, loginUser, logOut, updateUser } from '../controller/userController';
+import { createUser, deleteUser, getAllUsers, getUserById, loginUser, logOut, restoreUser, updateUser } from '../controller/userController';
 import { forgotPassword, resetPassword } from '../controller/forgotPassword';
 import { userActivities } from '../controller/userActivities';
 import upload from '../middleware/multer'
@@ -262,8 +262,6 @@ router.get("/:id/get-users-by-id",getUserById)
  *               phoneNumber:
  *                 type: string
  *                 description: User's phone number
- *               profilePicture:
- *               type:string
  *     responses:
  *       200:
  *         description: Successfully updated the user (only updated fields are returned)
@@ -438,5 +436,50 @@ router.post('/reset-password',resetPassword)
  */
 
 router.get("/user-activities/:userId", userActivities)
-
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: Soft delete a user (Deactivate)
+ *     description: Marks the user as deleted instead of permanently removing them from the database.
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user ID
+ *     responses:
+ *       200:
+ *         description: User deactivated successfully.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal server error.
+ */
+router.delete("/:id",deleteUser)
+/**
+ * @swagger
+ * /users/{id}/restore:
+ *   patch:
+ *     summary: Restore a deactivated user
+ *     description: Re-activates a previously deactivated user.
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user ID
+ *     responses:
+ *       200:
+ *         description: User reactivated successfully.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal server error.
+ */
+router.get("/:id/restore",restoreUser)
 export default router;

@@ -26,7 +26,11 @@ const UserSchema = new Schema({
   skype_username: { type: String },
   resetPasswordToken: { type: String },
   resetPasswordExpires: { type: Date },
-  profilePicture: { type: String } // New field for profile picture
+  profilePicture: { type: String ,default:null},// New field for profile picture
+  
+  // Soft delete fields
+  isDeleted: { type: Boolean, default: false },
+  deletedAt: { type: Date, default: null }
 }, {
   timestamps: true
 });

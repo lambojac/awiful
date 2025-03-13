@@ -46,11 +46,18 @@ export const getRevenueByYear = asyncHandler(async (req: Request, res: Response)
           totalAmountGenerated: { $sum: "$price" }
         }
       },
+      { 
+        $project: {
+          userId: "$_id.userId",
+          username: "$_id.username",
+          email: "$_id.email",
+          numberOfProjects: 1,
+          totalAmountGenerated: 1,
+          _id: 0
+        }
+      },
       { $sort: { totalAmountGenerated: -1 } }
     ]);
-
-    console.log("User Payments:", userPayments);
-
     // Ensure all 12 months are covered
     const monthlyRevenue = Array(12).fill(0);
     revenueByYear.forEach(entry => {
