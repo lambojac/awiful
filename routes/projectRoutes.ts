@@ -341,7 +341,7 @@ router.get('/projects/:userId',Secure, getProjectsByUserId);
 /**
  * @swagger
  * /project/{projectId}/staff/{userId}
- *   delete:
+ *   Delete:
  *     summary: Unassign a staff member from a project
  *     tags: [Projects]
  *     requestBody:
