@@ -74,7 +74,7 @@ export const getAllProjects = asyncHandler(async (req: Request, res: Response) =
 
     // Fetch projects based on the query
     const projects = await ProjectManagement.find(query)
-        .select("title email project_id createdAt service type");
+        .select("title email project_id createdAt service type status");
 
     res.status(200).json({ projects });
 });

@@ -54,7 +54,7 @@ exports.getAllProjects = (0, express_async_handler_1.default)(async (req, res) =
         query.type = { $in: ["marketing", "project"] };
     }
     const projects = await projectManagement_1.default.find(query)
-        .select("title email project_id createdAt service type");
+        .select("title email project_id createdAt service type status");
     res.status(200).json({ projects });
 });
 exports.getProjectById = (0, express_async_handler_1.default)(async (req, res) => {
