@@ -25,7 +25,8 @@ const UserSchema = new Schema({
   zoom_username: { type: String },
   skype_username: { type: String },
   resetPasswordToken: { type: String },
-  resetPasswordExpires: { type: Date }
+  resetPasswordExpires: { type: Date },
+  profilePicture: { type: String } // New field for profile picture
 }, {
   timestamps: true
 });

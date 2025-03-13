@@ -56,7 +56,8 @@ const UserSchema = new mongoose_1.Schema({
     zoom_username: { type: String },
     skype_username: { type: String },
     resetPasswordToken: { type: String },
-    resetPasswordExpires: { type: Date }
+    resetPasswordExpires: { type: Date },
+    profilePicture: { type: String }
 }, {
     timestamps: true
 });

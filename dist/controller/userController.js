@@ -8,6 +8,7 @@ const user_1 = __importDefault(require("../models/user"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const genToken_1 = __importDefault(require("../utils/genToken"));
+const cloudinary_1 = __importDefault(require("../config/cloudinary"));
 const createUser = async (req, res) => {
     try {
         const { firstName, lastName, password, gender, address, country, username, email, phone_number, role, zoom_username, skype_username } = req.body;
@@ -119,9 +120,16 @@ exports.getUserById = getUserById;
 const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const updatedData = req.body;
+        let updatedData = req.body;
         if (updatedData.password) {
             updatedData.password = await bcrypt_1.default.hash(updatedData.password, 10);
+        }
+        if (req.file) {
+            const result = await cloudinary_1.default.uploader.upload(req.file.path, {
+                folder: 'profile_pictures',
+                transformation: [{ width: 300, height: 300, crop: 'fill' }],
+            });
+            updatedData.profilePicture = result.secure_url;
         }
         const updatedUser = await user_1.default.findByIdAndUpdate(id, updatedData, { new: true });
         if (!updatedUser) {

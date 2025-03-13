@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import asynchandler from "express-async-handler";
 import genToken from "../utils/genToken";
 import { UserDocument } from '../models/user';
-
+import cloudinary from '../config/cloudinary';
 
 // create user
 export const createUser = async (req: Request, res: Response) => {
@@ -153,17 +153,29 @@ export const getUserById = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const updatedData = req.body;
+    let updatedData = req.body;
 
+    // Handle password update
     if (updatedData.password) {
       updatedData.password = await bcrypt.hash(updatedData.password, 10);
     }
 
+    // Check if a profile picture is uploaded
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: 'profile_pictures', // Optional: Store in a specific folder
+        transformation: [{ width: 300, height: 300, crop: 'fill' }], // Resize if needed
+      });
+      updatedData.profilePicture = result.secure_url; // Store the URL in the database
+    }
+
+    // Update user in database
     const updatedUser = await User.findByIdAndUpdate(id, updatedData, { new: true });
 
     if (!updatedUser) {
       return res.status(404).json({ message: 'User not found' });
     }
+
     return res.status(200).json(updatedUser);
   } catch (error) {
     return res.status(500).json({ error: error.message });

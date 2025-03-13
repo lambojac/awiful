@@ -2,7 +2,7 @@ import express from 'express';
 import { createUser, getAllUsers, getUserById, loginUser, logOut, updateUser } from '../controller/userController';
 import { forgotPassword, resetPassword } from '../controller/forgotPassword';
 import { userActivities } from '../controller/userActivities';
-
+import upload from '../middleware/multer'
 const router = express.Router();
 
 /**
@@ -262,6 +262,8 @@ router.get("/:id/get-users-by-id",getUserById)
  *               phoneNumber:
  *                 type: string
  *                 description: User's phone number
+ *               profilePicture:
+ *               type:string
  *     responses:
  *       200:
  *         description: Successfully updated the user (only updated fields are returned)
@@ -278,7 +280,7 @@ router.get("/:id/get-users-by-id",getUserById)
  *         description: Internal server error
  */
 
-router.put("/:id",updateUser)
+router.patch('/:id', upload.single('profilePicture'), updateUser);
 /**
  * @swagger
  * /users/forgot-password:
