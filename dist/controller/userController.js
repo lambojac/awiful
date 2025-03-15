@@ -89,9 +89,14 @@ exports.logOut = (0, express_async_handler_1.default)(async (_req, res) => {
 });
 const getAllUsers = async (_req, res) => {
     try {
-        const users = await user_1.default.find().select("-password");
+        const users = await user_1.default.find();
         const formattedUsers = users.map((user) => ({
-            ...user.toObject(),
+            user_name: `${user.firstName} ${user.lastName}`,
+            email: user.email,
+            date_created: new Date(user.date_created).toISOString().split("T")[0],
+            phone: user.phone_number,
+            user_role: user.role,
+            user_id: user._id.toString(),
             status: user.isDeleted ? "non-active" : "active",
         }));
         res.status(200).json(formattedUsers);
@@ -103,9 +108,9 @@ const getAllUsers = async (_req, res) => {
 exports.getAllUsers = getAllUsers;
 const getUserById = async (req, res) => {
     try {
-        const user = await user_1.default.findById(req.params.id).select("-password");
+        const user = await user_1.default.findById(req.params.id).select('-password');
         if (!user) {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ message: 'User not found' });
         }
         return res.status(200).json({
             ...user.toObject(),
