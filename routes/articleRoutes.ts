@@ -6,6 +6,7 @@ import {
   updateArticle,
   deleteArticle,
   getPublishedArticles,
+  getPublishedArticleById,
 } from "../controller/article";
 import upload from "../middleware/multer"
 import Secure from '../middleware/authMiddleware'
@@ -69,6 +70,46 @@ const router = express.Router();
  */
 
 router.get("/published-article",getPublishedArticles)
+/**
+ * @swagger
+ * /published-articles/{id}:
+ *   get:
+ *     summary: Get a published article by ID
+ *     tags: [Articles]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the published article
+ *     responses:
+ *       200:
+ *         description: Article found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   example: "64a3b2c4567deef123456789"
+ *                 title:
+ *                   type: string
+ *                   example: "Understanding Express.js Middleware"
+ *                 content:
+ *                   type: string
+ *                   example: "This is the article content..."
+ *                 status:
+ *                   type: string
+ *                   example: "published"
+ *       404:
+ *         description: Published article not found
+ *       500:
+ *         description: Server error
+ */
+
+router.get("/published-articles/:id", getPublishedArticleById);
 /**
  * @swagger
  * tags:

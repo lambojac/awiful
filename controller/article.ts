@@ -25,6 +25,23 @@ export const getPublishedArticles = async (_req: Request, res: Response) => {
   }
 };
 
+
+// get published article byid
+export const getPublishedArticleById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const article = await Article.findOne({ _id: id, status: "published" });
+
+    if (!article) {
+      return res.status(404).json({ message: "Published article not found" });
+    }
+
+   return res.status(200).json(article);
+  } catch (error) {
+    return res.status(500).json({ message: "Server error", error });
+  }
+};
 /**
  * @desc    Get a single article by ID
  * @route   GET /api/articles/:id
