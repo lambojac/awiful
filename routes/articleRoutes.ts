@@ -72,7 +72,7 @@ const router = express.Router();
 router.get("/published-article",getPublishedArticles)
 /**
  * @swagger
- * /published-articles/{id}:
+ * /articles/published-articles/{id}:
  *   get:
  *     summary: Get a published article by ID
  *     tags: [Articles]
