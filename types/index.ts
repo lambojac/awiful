@@ -27,6 +27,7 @@ export interface StatCardData {
     skype_username: string;
     resetPasswordToken?: string;
     resetPasswordExpires?: Date;
+    isDeleted:boolean
   }
   
   export interface ProjectManagementDataProps {

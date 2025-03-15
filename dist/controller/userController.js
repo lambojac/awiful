@@ -97,6 +97,7 @@ const getAllUsers = async (_req, res) => {
             phone: user.phone_number,
             user_role: user.role,
             user_id: user._id.toString(),
+            status: user.isDeleted ? "non-active" : "active",
         }));
         res.status(200).json(formattedUsers);
     }
@@ -107,11 +108,18 @@ const getAllUsers = async (_req, res) => {
 exports.getAllUsers = getAllUsers;
 const getUserById = async (req, res) => {
     try {
-        const user = await user_1.default.findById(req.params.id).select('-password');
+        const user = await user_1.default.findById(req.params.id).select("-password");
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: "User not found" });
         }
-        return res.status(200).json(user);
+        return res.status(200).json({
+            user_name: `${user.firstName} ${user.lastName}`,
+            email: user.email,
+            phone: user.phone_number,
+            user_role: user.role,
+            user_id: user._id.toString(),
+            status: user.isDeleted ? "non-active" : "active",
+        });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
