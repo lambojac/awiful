@@ -19,8 +19,7 @@ export const getAllEstimates = asyncHandler(async (_req: Request, res: Response)
       email: estimate.client.email,
       date: new Date().toLocaleDateString(),
       service_requested: estimate.request_details.service,
-      status: estimate.status,
-      request_id: estimate.request_details.request_id
+      status: estimate.status
     }));
   
     res.status(200).json({
