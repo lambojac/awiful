@@ -22,6 +22,7 @@ export interface StatCardData {
     email: string;
     phone_number: string;
     role: string;
+    profilePicture:string;
     zoom_username: string;
     skype_username: string;
     resetPasswordToken?: string;

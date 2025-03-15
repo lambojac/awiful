@@ -56,7 +56,7 @@ exports.loginUser = (0, express_async_handler_1.default)(async (req, res) => {
             sameSite: "none",
             secure: true,
         });
-        const { id, email, role, firstName, lastName, gender, address, country, username, phone_number } = user;
+        const { id, email, role, firstName, lastName, gender, address, country, username, phone_number, profilePicture } = user;
         res.status(200).json({
             id: id.toString(),
             email,
@@ -68,7 +68,8 @@ exports.loginUser = (0, express_async_handler_1.default)(async (req, res) => {
             address,
             country,
             username,
-            phone_number
+            phone_number,
+            profilePicture
         });
     }
     else {

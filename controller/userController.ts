@@ -76,7 +76,7 @@ export const loginUser = asynchandler(async (req: Request, res: Response): Promi
         address,
         country,
         username, 
-        phone_number} = user;
+        phone_number, profilePicture} = user;
   
       // Include the user ID in the response
       res.status(200).json({
@@ -90,7 +90,8 @@ export const loginUser = asynchandler(async (req: Request, res: Response): Promi
          address,
          country,
          username, 
-         phone_number
+         phone_number,
+         profilePicture
       });
     } else {
       res.status(400);
