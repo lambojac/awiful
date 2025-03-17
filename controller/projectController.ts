@@ -230,10 +230,10 @@ export const getProjectsByUserId = asyncHandler(async (req: Request, res: Respon
   let projects;
 
   // If user is a customer, get projects where they are the client
-  projects = await ProjectManagement.find({ client: userId });
+  projects = await ProjectManagement.find({ client: userId }).select("title email service type status createdAt");;
 
   // If user is staff, also get projects where they are assigned
-  const staffProjects = await ProjectManagement.find({ "handled_by.user_id": userId });
+  const staffProjects = await ProjectManagement.find({ "handled_by.user_id": userId }).select("title email service type status createdAt");;
 
   projects = [...projects, ...staffProjects];
 

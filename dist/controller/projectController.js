@@ -147,8 +147,10 @@ exports.getProjectsByUserId = (0, express_async_handler_1.default)(async (req, r
         throw new Error("User not found");
     }
     let projects;
-    projects = await projectManagement_1.default.find({ client: userId });
-    const staffProjects = await projectManagement_1.default.find({ "handled_by.user_id": userId });
+    projects = await projectManagement_1.default.find({ client: userId }).select("title email service type status createdAt");
+    ;
+    const staffProjects = await projectManagement_1.default.find({ "handled_by.user_id": userId }).select("title email service type status createdAt");
+    ;
     projects = [...projects, ...staffProjects];
     res.status(200).json({ projects });
 });
