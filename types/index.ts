@@ -146,3 +146,17 @@ export interface LatestActivity {
     status: string;
     timestamp:string
   }
+
+export  interface ILandingVisit {
+    timestamp: Date;
+    ipAddress?: string;
+    userAgent?: string;
+  }
+  
+export interface IUserVisit {
+    userId: string;
+    timestamp: Date;
+    area: string;
+    ipAddress?: string;
+    userAgent?: string;
+  }

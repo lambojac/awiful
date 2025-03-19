@@ -17,7 +17,7 @@ import revenue from "./routes/revenue"
 import estimate from "./routes/customerEstimate"
 import stripeRoutes from './routes/stripe';
 import projectTimeline from "./routes/projectTimeline"
-
+import website from "./routes/website"
 const app: Application = express();
 
 // Middleware
@@ -39,7 +39,7 @@ app.use("/api",getProjectAnalytics)
 app.use("/api/revenue",revenue)
 app.use("/api/estimate",estimate)
 app.use("/api/project-timeline",projectTimeline)
-
+app.use("/",website)
 app.use('/api/stripe', stripeRoutes);
 // Swagger
 setupSwagger(app as any);
