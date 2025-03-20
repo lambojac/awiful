@@ -12,7 +12,6 @@ const LandingVisitSchema = new mongoose_1.default.Schema({
 });
 const UserVisitSchema = new mongoose_1.default.Schema({
     userId: { type: String, required: true, index: true },
-    macAddress: { type: String, required: true, index: true },
     timestamp: { type: Date, default: Date.now },
     area: { type: String, required: true },
     ipAddress: String,

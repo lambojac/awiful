@@ -39,7 +39,7 @@ app.use("/api",getProjectAnalytics)
 app.use("/api/revenue",revenue)
 app.use("/api/estimate",estimate)
 app.use("/api/project-timeline",projectTimeline)
-app.use("/api/",website)
+app.use("/api",website)
 app.use('/api/stripe', stripeRoutes);
 // Swagger
 setupSwagger(app as any);

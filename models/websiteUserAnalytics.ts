@@ -7,7 +7,6 @@ const LandingVisitSchema = new mongoose.Schema({
 
 const UserVisitSchema = new mongoose.Schema({
   userId: { type: String, required: true, index: true },
-  macAddress: { type: String, required: true, index: true },
   timestamp: { type: Date, default: Date.now },
   area: { type: String, required: true }, // dashboard, settings, etc.
   ipAddress: String,
