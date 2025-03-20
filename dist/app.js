@@ -41,7 +41,7 @@ app.use("/api", projectAnalytics_1.default);
 app.use("/api/revenue", revenue_1.default);
 app.use("/api/estimate", customerEstimate_1.default);
 app.use("/api/project-timeline", projectTimeline_1.default);
-app.use("/", website_1.default);
+app.use("/api/", website_1.default);
 app.use('/api/stripe', stripe_1.default);
 (0, swagger_1.default)(app);
 (0, database_1.default)();
