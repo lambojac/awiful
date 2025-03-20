@@ -3,7 +3,7 @@ import express from 'express';
 const router = express.Router();
 /**
  * @swagger
- * /api/track/landing:
+ * /track/landing:
  *   post:
  *     summary: Track landing page visit
  *     description: Records a landing page visit using the visitor's IP address
@@ -35,7 +35,7 @@ router.post('/track/landing', landingPageIp)
 
 /**
  * @swagger
- * /api/track/user:
+ * /track/user:
  *   post:
  *     summary: Track user activity
  *     description: Records a user visit with user ID and area information
@@ -100,7 +100,7 @@ router.post('/track/user', userAnalytics)
 
 /**
  * @swagger
- * /api/analytics/landing/daily:
+ * /analytics/landing/daily:
  *   get:
  *     summary: Get unique landing page visits by day
  *     description: Returns a count of unique visitors per day based on IP address
@@ -152,7 +152,7 @@ router.get('/analytics/landing/daily', landingPageVisit)
 
 /**
  * @swagger
- * /api/analytics/users/monthly:
+ * /analytics/users/monthly:
  *   get:
  *     summary: Get unique active users by month
  *     description: Returns monthly counts of unique visitors and registered users
@@ -208,7 +208,7 @@ router.get('/analytics/users/monthly', userMontlyAnalytics)
 
 /**
  * @swagger
- * /api/analytics/landing/details:
+ * /analytics/landing/details:
  *   get:
  *     summary: Get detailed landing page visits
  *     description: Returns paginated detailed landing page visit records
@@ -292,7 +292,7 @@ router.get('/analytics/landing/details', getDetailedLandingPageVisit)
 
 /**
  * @swagger
- * /api/analytics/users/details:
+ * /analytics/users/details:
  *   get:
  *     summary: Get detailed user visits
  *     description: Returns paginated detailed user visit records with optional filtering
