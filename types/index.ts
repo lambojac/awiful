@@ -50,7 +50,8 @@ export interface StatCardData {
   stripe_payment_intent_id:string;
   stripe_client_secret:string;
   revenue?: IRevenueCard
-  timestamp:string
+  timestamp:string;
+  assigned_date:string
 }
 
   
@@ -160,3 +161,8 @@ export interface IUserVisit {
     ipAddress?: string;
     userAgent?: string;
   }
+ export interface UserAssignment {
+     user_id: mongoose.Schema.Types.ObjectId;
+     user_name: string;
+     assigned_date: Date;
+   }

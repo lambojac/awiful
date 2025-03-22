@@ -135,9 +135,19 @@ exports.assignStaffToProject = (0, express_async_handler_1.default)(async (req, 
         res.status(400);
         throw new Error("User is already assigned to this project");
     }
-    project.handled_by.push({ user_id: userId, user_name: userName });
-    await project.save();
-    res.status(200).json({ message: "Staff assigned successfully", project });
+    const assignmentDate = new Date();
+    project.handled_by.push({
+        user_id: userId,
+        user_name: userName,
+        assigned_date: assignmentDate
+    });
+    res.status(200).json({ message: "Staff assigned successfully",
+        project,
+        assignment: {
+            userId,
+            userName,
+            assignedDate: assignmentDate
+        } });
 });
 exports.getProjectsByUserId = (0, express_async_handler_1.default)(async (req, res) => {
     const { userId } = req.params;

@@ -2,7 +2,21 @@ import mongoose, { Schema } from 'mongoose';
 import { ProjectManagementDataProps } from '../types/index';
 
 export interface ProjectManagementDocument extends ProjectManagementDataProps {}
-
+const userAssignmentSchema = new mongoose.Schema({
+  user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  user_name: {
+    type: String,
+    required: true
+  },
+  assigned_date: {
+    type: Date,
+    default: Date.now
+  }
+});
 const ProjectManagementSchema = new Schema({
   title: { type: String,  },
   userId:{type: Schema.Types.ObjectId, ref: "User", },
@@ -19,7 +33,7 @@ const ProjectManagementSchema = new Schema({
   socials: { type: Schema.Types.Mixed, default: null }, 
   status: { type: String, enum: ["pending", "in_progress", "completed", "canceled"], default: "in_progress" },
   status_percentage: { type: Number, default: 10 },
-  handled_by: [{ user_name: String, user_id: { type: Schema.Types.ObjectId, ref: "User" } }],
+  handled_by: [userAssignmentSchema],
   payment_status: { 
     type: String, 
     enum: ["pending", "processing", "paid", "failed"], 

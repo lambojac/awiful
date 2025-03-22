@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import ProjectManagement from '../models/projectManagement';
 import asyncHandler from "express-async-handler";
 import User from "../models/user"
-
+import { UserAssignment } from '../types/index';
 
 // Create Project
 
@@ -207,10 +207,20 @@ export const assignStaffToProject = asyncHandler(async (req: Request, res: Respo
       throw new Error("User is already assigned to this project");
   }
 
-  project.handled_by.push({ user_id: userId, user_name: userName });
-  await project.save();
-
-  res.status(200).json({ message: "Staff assigned successfully", project });
+   // Add assigned date to the user assignment data
+   const assignmentDate = new Date();
+  project.handled_by.push({ 
+    user_id: userId, 
+    user_name: userName,
+    assigned_date: assignmentDate 
+  } as UserAssignment);
+  res.status(200).json({message: "Staff assigned successfully", 
+    project,
+    assignment: {
+      userId,
+      userName,
+      assignedDate: assignmentDate
+    }});
 });
 
 

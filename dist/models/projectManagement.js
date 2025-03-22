@@ -34,6 +34,21 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
+const userAssignmentSchema = new mongoose_1.default.Schema({
+    user_id: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    user_name: {
+        type: String,
+        required: true
+    },
+    assigned_date: {
+        type: Date,
+        default: Date.now
+    }
+});
 const ProjectManagementSchema = new mongoose_1.Schema({
     title: { type: String, },
     userId: { type: mongoose_1.Schema.Types.ObjectId, ref: "User", },
@@ -50,7 +65,7 @@ const ProjectManagementSchema = new mongoose_1.Schema({
     socials: { type: mongoose_1.Schema.Types.Mixed, default: null },
     status: { type: String, enum: ["pending", "in_progress", "completed", "canceled"], default: "in_progress" },
     status_percentage: { type: Number, default: 10 },
-    handled_by: [{ user_name: String, user_id: { type: mongoose_1.Schema.Types.ObjectId, ref: "User" } }],
+    handled_by: [userAssignmentSchema],
     payment_status: {
         type: String,
         enum: ["pending", "processing", "paid", "failed"],
